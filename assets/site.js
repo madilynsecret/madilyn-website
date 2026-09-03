@@ -95,6 +95,15 @@ var LANES = {
   var lang = document.documentElement.getAttribute("lang");
   var suffix = lang === "en" ? "_en" : "_th";
 
+  // ต้องตรงกับ value ของ <option> ในฟอร์มขอใบเสนอราคา (ผูกกับ Google Form)
+  var LANE_SELECT_VALUES = {
+    cn: "จีน → ไทย",
+    my: "มาเลเซีย → ไทย",
+    la: "ลาว → ไทย",
+    kh: "กัมพูชา → ไทย",
+    ex: "ไทย → ต่างประเทศ (ส่งออก)"
+  };
+
   function fill(id, items) {
     var el = document.getElementById(id);
     if (el) el.innerHTML = items.map(function (t) { return "<li>" + t + "</li>"; }).join("");
@@ -108,7 +117,7 @@ var LANES = {
     fill("lane-risk", d["risk" + suffix]);
     tabs.forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.lane === key)); });
     var sel = document.getElementById("q-lane");
-    if (sel) sel.value = key;
+    if (sel && LANE_SELECT_VALUES[key]) sel.value = LANE_SELECT_VALUES[key];
   }
   tabs.forEach(function (b) { b.addEventListener("click", function () { setLane(b.dataset.lane); }); });
   setLane("cn");

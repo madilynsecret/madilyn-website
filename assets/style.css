@@ -86,11 +86,11 @@ header.nav{
   position:sticky;top:0;z-index:60;background:rgba(11,37,69,.92);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
-.nav-in{display:flex;align-items:center;gap:1.5rem;height:4.3rem}
+.nav-in{display:flex;align-items:center;gap:1rem 1.5rem;min-height:4.3rem;flex-wrap:wrap;padding:.5rem 0}
 .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;flex:none}
 .brand svg{height:2rem;width:auto}
 .brand b{font-family:'Poppins',sans-serif;font-weight:600;font-size:var(--fs-sm);letter-spacing:.08em;white-space:nowrap}
-.nav-links{display:flex;gap:1.4rem;margin-left:auto;align-items:center}
+.nav-links{display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;margin-left:auto;align-items:center;justify-content:flex-end}
 .nav-links a.navlink{text-decoration:none;font-size:var(--fs-sm);opacity:.72;transition:opacity .2s;white-space:nowrap}
 .nav-links a.navlink:hover,.nav-links a.navlink[aria-current="page"]{opacity:1}
 .nav-links a.navlink[aria-current="page"]{color:var(--gold)}
@@ -251,6 +251,7 @@ footer svg{height:2.4rem;width:auto}
 @media (max-width:760px){
   html[lang="th"]{font-size:16px}
   .nav-links a.navlink{display:none}
+  .nav-links a.btn-gold{display:none}
   .nav-in{gap:.7rem}
   section{padding:3.4rem 0}
   .hero{padding:3.4rem 0 2.6rem}

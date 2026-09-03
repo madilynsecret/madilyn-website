@@ -56,7 +56,7 @@
       <div class="fact"><b>2560 / 2017</b><span><span class="t-th">ปีที่จดทะเบียนบริษัท</span><span class="t-en">Year registered</span></span></div>
       <div class="fact"><b>5</b><span><span class="t-th">ประเทศที่มีเครือข่าย</span><span class="t-en">Countries in our network</span></span></div>
       <div class="fact"><b>3</b><span><span class="t-th">สำนักงาน น่าน · กรุงเทพฯ · มาเลเซีย</span><span class="t-en">Offices: Nan, Bangkok, Malaysia</span></span></div>
-      <div class="fact"><b><span class="t-th">จ–ศ 9–18</span><span class="t-en">Mon–Fri 9–18</span></b><span><span class="t-th">เวลาทำการ</span><span class="t-en">Business hours</span></span></div>
+      <div class="fact"><b><span class="t-th">จ–ศ 9–16</span><span class="t-en">Mon–Fri 9–16</span></b><span><span class="t-th">เวลาทำการ</span><span class="t-en">Business hours</span></span></div>
     </div>
   </div>
 </section>
@@ -146,7 +146,7 @@
           <li><b><span class="t-th">สำนักงาน · มาเลเซีย</span><span class="t-en">Office · Malaysia</span></b><span>Jalan Puteri 9/1, Bandar Puteri, Puchong, Selangor 47100</span></li>
           <li><b><span class="t-th">ติดต่อ</span><span class="t-en">Contact</span></b><span>
             <span class="t-th">โทร</span><span class="t-en">Tel</span> 085-559-0903 · import-export@madilynsecret.com<br>
-            <span class="t-th">เวลาทำการ จันทร์–ศุกร์ 9:00–18:00</span><span class="t-en">Mon–Fri 9:00–18:00 ICT</span></span></li>
+            <span class="t-th">เวลาทำการ จันทร์–ศุกร์ 9:00–16:00</span><span class="t-en">Mon–Fri 9:00–16:00 ICT</span></span></li>
         </ul>
         <div class="social">
           <a href="https://www.facebook.com/madilynsecretimportexport/" target="_blank" rel="noopener">Facebook</a>
@@ -155,34 +155,36 @@
         </div>
       </div>
 
-      <!-- ▼ เปลี่ยน action เป็นลิงก์ Formspree ของคุณ -->
-      <form action="#" method="post">
+      <!-- เชื่อมกับ Google Form: ขอใบเสนอราคา -->
+      <form id="quote-form" action="https://docs.google.com/forms/d/e/1FAIpQLScQ6ZanICd8jhh3fu00Rm2cQPU7iYjnz2UkQNQK-Q9uijzrjg/formResponse" method="post" target="hidden_iframe">
         <div class="form-row">
           <div>
             <label for="q-name"><span class="t-th">ชื่อผู้ติดต่อ</span><span class="t-en">Your name</span></label>
-            <input id="q-name" name="name" type="text" required>
+            <input id="q-name" name="entry.911960021" type="text" required>
           </div>
           <div>
             <label for="q-phone"><span class="t-th">เบอร์โทร หรือ LINE ID</span><span class="t-en">Phone or LINE ID</span></label>
-            <input id="q-phone" name="phone" type="text" required>
+            <input id="q-phone" name="entry.751958729" type="text" required>
           </div>
         </div>
         <label for="q-lane"><span class="t-th">เส้นทาง</span><span class="t-en">Lane</span></label>
-        <select id="q-lane" name="lane">
-          <option value="cn"><span class="t-th">จีน → ไทย</span><span class="t-en">China → Thailand</span></option>
-          <option value="my"><span class="t-th">มาเลเซีย → ไทย</span><span class="t-en">Malaysia → Thailand</span></option>
-          <option value="la"><span class="t-th">ลาว ⇄ ไทย</span><span class="t-en">Laos ⇄ Thailand</span></option>
-          <option value="kh"><span class="t-th">กัมพูชา ⇄ ไทย</span><span class="t-en">Cambodia ⇄ Thailand</span></option>
-          <option value="ex"><span class="t-th">ไทย → ต่างประเทศ</span><span class="t-en">Thailand → Worldwide</span></option>
-          <option value="na"><span class="t-th">ยังไม่แน่ใจ</span><span class="t-en">Not sure yet</span></option>
+        <select id="q-lane" name="entry.1226602017">
+          <option value="จีน → ไทย"><span class="t-th">จีน → ไทย</span><span class="t-en">China → Thailand</span></option>
+          <option value="มาเลเซีย → ไทย"><span class="t-th">มาเลเซีย → ไทย</span><span class="t-en">Malaysia → Thailand</span></option>
+          <option value="ลาว → ไทย"><span class="t-th">ลาว ⇄ ไทย</span><span class="t-en">Laos ⇄ Thailand</span></option>
+          <option value="กัมพูชา → ไทย"><span class="t-th">กัมพูชา ⇄ ไทย</span><span class="t-en">Cambodia ⇄ Thailand</span></option>
+          <option value="ไทย → ต่างประเทศ (ส่งออก)"><span class="t-th">ไทย → ต่างประเทศ</span><span class="t-en">Thailand → Worldwide</span></option>
+          <option value="ยังไม่แน่ใจ"><span class="t-th">ยังไม่แน่ใจ</span><span class="t-en">Not sure yet</span></option>
         </select>
         <label for="q-goods"><span class="t-th">สินค้าอะไร ปริมาณเท่าไร</span><span class="t-en">What are the goods, and how many</span></label>
-        <textarea id="q-goods" name="goods" rows="4" required></textarea>
+        <textarea id="q-goods" name="entry.1047789759" rows="4" required></textarea>
         <label for="q-link"><span class="t-th">ลิงก์หรือรูปสินค้า (ถ้ามี)</span><span class="t-en">Product link, if you have one</span></label>
-        <input id="q-link" name="link" type="text" placeholder="1688 / Alibaba / supplier site">
+        <input id="q-link" name="entry.80536570" type="text" placeholder="1688 / Alibaba / supplier site">
         <button class="btn btn-gold btn-block" type="submit" style="margin-top:.4rem"><span class="t-th">ส่งคำขอใบเสนอราคา</span><span class="t-en">Send request</span></button>
+        <p id="quote-success-msg" class="fineprint" style="display:none;color:#0B7A3B;font-weight:600"><span class="t-th">ส่งคำขอเรียบร้อย เราจะติดต่อกลับภายในเวลาทำการ</span><span class="t-en">Thanks — your request was sent. We will be in touch within business hours.</span></p>
         <p class="fineprint"><span class="t-th">เราตอบกลับภายในเวลาทำการ ข้อมูลสินค้าของคุณใช้เพื่อจัดทำใบเสนอราคาเท่านั้น ตัวเลขในใบเสนอราคาเป็นการประเมินตามข้อมูลที่ได้รับ อาจเปลี่ยนเมื่อพิกัดหรือประกาศของหน่วยงานเปลี่ยน</span><span class="t-en">We reply within business hours. Your product details are used only to prepare the quote. Figures are estimates based on the information given and may change if the tariff code or a regulation changes.</span></p>
       </form>
+      <iframe name="hidden_iframe" id="hidden_iframe" title="quote-form-target" style="display:none"></iframe>
     </div>
   </div>
 </section>
@@ -225,5 +227,24 @@
 </div>
 
 <script src="assets/site.js"></script>
+<script>
+(function () {
+  var form = document.getElementById('quote-form');
+  var iframe = document.getElementById('hidden_iframe');
+  var successMsg = document.getElementById('quote-success-msg');
+  var submitted = false;
+  if (form && iframe) {
+    form.addEventListener('submit', function () {
+      submitted = true;
+    });
+    iframe.addEventListener('load', function () {
+      if (!submitted) return;
+      submitted = false;
+      if (successMsg) successMsg.style.display = 'block';
+      form.reset();
+    });
+  }
+})();
+</script>
 </body>
 </html>
