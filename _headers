@@ -1,0 +1,27 @@
+# ─────────────────────────────────────────────
+#  Cloudflare Pages — HTTP headers
+#  ไฟล์นี้ Cloudflare อ่านเองอัตโนมัติ ไม่ต้องตั้งค่าอะไรเพิ่ม
+# ─────────────────────────────────────────────
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# ไฟล์ที่ไม่ค่อยเปลี่ยน ให้เบราว์เซอร์เก็บไว้ 1 ปี
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/downloads/*
+  Cache-Control: public, max-age=604800
+
+/*.png
+  Cache-Control: public, max-age=2592000
+
+/*.svg
+  Cache-Control: public, max-age=2592000
+
+# หน้าเว็บให้เช็กใหม่เสมอ จะได้เห็นการแก้ไขทันที
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คลังศัพท์การค้า | Madilyn Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B2545; --navy-deep:#081A33; --facet-blue:#1B4E7A;
+  --teal:#12798D; --teal-light:#4FC3D9; --teal-soft:#E4F1F3;
+  --gold:#C8A045; --gold-shade:#9C7726; --gold-soft:#F3E6C8;
+  --cream:#F7F3EC; --paper:#FFFFFF; --ink:#20242B; --ink-soft:#5B6672;
+  --line:#E4DFD1;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Prompt',sans-serif;background:var(--cream);color:var(--ink);line-height:1.7;}
+h1,h2,h3{font-weight:600;margin:0;}
+a{color:inherit;text-decoration:none;}
+.brand-en{font-family:'Poppins',sans-serif;}
+
+header.site{background:var(--navy);color:#fff;}
+.topbar{max-width:900px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.brand{font-family:'Poppins',sans-serif;font-size:17px;font-weight:600;letter-spacing:.2px;}
+nav.links{display:flex;gap:18px;font-size:13px;color:#CFE0EA;flex-wrap:wrap;}
+nav.links a:hover{color:#fff;}
+
+.crumbs{max-width:900px;margin:0 auto;padding:12px 24px 0;font-size:12.5px;color:var(--ink-soft);}
+main{max-width:900px;margin:0 auto;padding:24px 24px 60px;}
+
+.badge{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 9px;border-radius:12px;margin-left:6px;vertical-align:middle;}
+.badge.teal{background:var(--teal-soft);color:var(--teal);}
+.badge.gold{background:var(--gold-soft);color:var(--gold-shade);}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:16px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0 28px;}
+.school-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:block;transition:border-color .15s;}
+.school-card:hover{border-color:var(--teal);}
+.school-card .num{font-family:'Poppins',sans-serif;font-size:11px;color:var(--gold-shade);font-weight:600;margin-bottom:6px;letter-spacing:.3px;}
+.school-card b{display:block;font-size:14.5px;color:var(--navy);margin-bottom:4px;}
+.school-card span.d{font-size:12.5px;color:var(--ink-soft);}
+
+.progress-wrap{margin:14px 0 24px;}
+.progress-label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-soft);margin-bottom:6px;}
+.progress-track{height:6px;background:var(--line);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--gold);}
+
+h1.page-title{font-size:25px;font-weight:600;color:var(--navy-deep);margin:0 0 6px;line-height:1.4;}
+.meta{font-size:12.5px;color:var(--ink-soft);margin-bottom:24px;}
+.obj-box{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:22px;}
+.obj-box .t{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px;}
+
+h2.sec{font-size:18px;font-weight:600;color:var(--navy-deep);margin:30px 0 10px;}
+p.body-text{font-size:14.5px;color:#3E4650;margin:0 0 10px;}
+ul.tight{margin:0 0 12px;padding-left:20px;font-size:14px;color:#3E4650;}
+ul.tight li{margin-bottom:5px;}
+
+.tag-v{display:inline-block;font-size:11px;font-weight:600;color:#2E7D32;background:#E8F3E9;padding:2px 8px;border-radius:10px;margin-left:6px;}
+.tag-c{display:inline-block;font-size:11px;font-weight:600;color:var(--gold-shade);background:var(--gold-soft);padding:2px 8px;border-radius:10px;margin-left:6px;}
+.src{font-size:12px;color:var(--ink-soft);font-style:italic;margin:-4px 0 16px;}
+
+.warning{background:var(--gold-soft);border:1px solid var(--gold);border-radius:10px;padding:14px 18px;margin:24px 0;}
+.warning .wt{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:#7A5715;margin-bottom:4px;}
+.warning .wx{font-size:13px;color:#5E4A1F;}
+
+table.dict{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px;}
+table.dict th{background:var(--navy);color:#fff;text-align:left;padding:9px 12px;font-weight:500;font-size:12.5px;}
+table.dict td{border-bottom:1px solid var(--line);padding:10px 12px;vertical-align:top;}
+input.search{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-family:'Prompt',sans-serif;font-size:14px;background:#FCFBF8;margin-bottom:14px;}
+input.search:focus{outline:none;border-color:var(--teal);}
+
+footer.nav-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:20px;margin-top:32px;flex-wrap:wrap;gap:10px;}
+.btn{font-family:'Prompt',sans-serif;font-size:13.5px;font-weight:500;padding:9px 18px;border-radius:6px;border:1px solid var(--navy);cursor:pointer;background:none;color:var(--navy);display:inline-block;}
+.btn-primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-primary:hover{background:var(--navy-deep);}
+.btn-ghost:hover{background:var(--teal-soft);}
+
+.case-block{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px;}
+.case-block .lbl{font-family:'Poppins',sans-serif;font-size:11.5px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="topbar">
+    <a href="index.html" class="brand">Madilyn Academy</a>
+    <nav class="links">
+      <a href="index.html">หลักสูตร</a><a href="school-3-dictionary.html">คลังศัพท์</a><a href="#">ดาวน์โหลดฟรี</a><a href="school-8-overview.html">เคสจริง</a><a href="#">ติดต่อ</a>
+    </nav>
+  </div>
+</header>
+<div class="crumbs"><a href="index.html">หลักสูตร</a> / School 3: Trade Language</div>
+<main>
+
+<h1 class="page-title">คลังศัพท์การค้าระหว่างประเทศ</h1>
+<p class="meta">School 3: International Trade Language · เริ่มจาก 14 คำศัพท์หลัก (แผนขยายเป็น 100-300 คำ)</p>
+<input class="search" id="q" placeholder="พิมพ์คำที่ต้องการค้นหา เช่น FOB, demurrage..." oninput="filterDict()">
+<table class="dict" id="dictTable">
+  <tr><th style="width:32%;">คำศัพท์</th><th>ความหมาย</th></tr>
+  <tr><td><b>FOB (Free On Board)</b></td><td>ผู้ขายรับผิดชอบจนสินค้าข้ามกราบเรือที่ท่าต้นทาง หลังจากนั้นความเสี่ยงและค่าใช้จ่ายเป็นของผู้ซื้อ</td></tr><tr><td><b>CIF (Cost, Insurance, Freight)</b></td><td>ผู้ขายรับผิดชอบค่าสินค้า ค่าประกันภัย และค่าขนส่งจนถึงท่าปลายทาง แต่ความเสี่ยงโอนให้ผู้ซื้อทันทีที่สินค้าข้ามกราบเรือที่ต้นทาง</td></tr><tr><td><b>EXW (Ex Works)</b></td><td>ผู้ซื้อรับผิดชอบค่าใช้จ่ายและความเสี่ยงทั้งหมดตั้งแต่หน้าโรงงานหรือคลังสินค้าของผู้ขาย</td></tr><tr><td><b>DDP (Delivered Duty Paid)</b></td><td>ผู้ขายรับผิดชอบค่าใช้จ่ายทั้งหมดจนถึงปลายทางรวมภาษีนำเข้า ต้องระบุผู้นำเข้าของตามกฎหมายให้ชัดเจนในสัญญา</td></tr><tr><td><b>DAP (Delivered At Place)</b></td><td>คล้าย DDP แต่ผู้ซื้อเป็นผู้รับผิดชอบพิธีการนำเข้าและภาษีนำเข้าเอง</td></tr><tr><td><b>FCL (Full Container Load)</b></td><td>การเช่าตู้คอนเทนเนอร์เต็มทั้งตู้สำหรับสินค้าของผู้ส่งรายเดียว</td></tr><tr><td><b>LCL (Less than Container Load)</b></td><td>การรวมสินค้าจากผู้ส่งหลายรายไว้ในตู้คอนเทนเนอร์เดียวกัน</td></tr><tr><td><b>ETA (Estimated Time of Arrival)</b></td><td>เวลาที่คาดว่าสินค้าจะถึงท่าปลายทาง</td></tr><tr><td><b>ETD (Estimated Time of Departure)</b></td><td>เวลาที่คาดว่าเรือหรือเครื่องบินจะออกจากท่าต้นทาง</td></tr><tr><td><b>Demurrage</b></td><td>ค่าปรับที่เรียกเก็บเมื่อเก็บตู้คอนเทนเนอร์ไว้ในท่าเรือเกินระยะเวลาฟรีที่กำหนด</td></tr><tr><td><b>Detention</b></td><td>ค่าปรับที่เรียกเก็บเมื่อนำตู้คอนเทนเนอร์ออกไปใช้งานนอกท่าเกินระยะเวลาที่กำหนดก่อนคืนสายเรือ</td></tr><tr><td><b>Freight Forwarder</b></td><td>ผู้ให้บริการจัดการขนส่งสินค้าระหว่างประเทศ ประสานงานแทนผู้นำเข้า-ส่งออก</td></tr><tr><td><b>Customs Broker / ตัวแทนออกของ</b></td><td>ผู้ได้รับอนุญาตจากกรมศุลกากรให้ดำเนินพิธีการศุลกากรแทนผู้นำเข้า-ส่งออก</td></tr><tr><td><b>Bonded Warehouse / คลังสินค้าทัณฑ์บน</b></td><td>คลังสินค้าที่ได้รับอนุญาตให้เก็บสินค้านำเข้าโดยยังไม่ต้องชำระภาษีอากรจนกว่าจะนำออกจากคลัง</td></tr>
+</table>
+<div class="warning" style="margin-top:24px;">
+  <div class="wt">หมายเหตุ</div>
+  <div class="wx">นิยาม Incoterms อ้างอิงหลักการทั่วไปตามกรอบ Incoterms 2020 ของ International Chamber of Commerce (ICC)</div>
+</div>
+<script>
+function filterDict(){
+  const q = document.getElementById('q').value.toLowerCase();
+  document.querySelectorAll('#dictTable tr').forEach((row, i) => {
+    if (i === 0) return;
+    row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+</script>
+
+</main>
+</body>
+</html>

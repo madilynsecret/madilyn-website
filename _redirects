@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────────────────────
+#  Cloudflare Pages — ตารางเปลี่ยนเส้นทาง (301 = ย้ายถาวร)
+#  รูปแบบ:  /ทางเก่า   /ทางใหม่   301
+#  ไฟล์นี้ต้องชื่อ _redirects (มีขีดล่างนำหน้า) และไม่มีนามสกุล
+#  วางไว้ในโฟลเดอร์เดียวกับ index.html
+# ─────────────────────────────────────────────────────────────
+
+# www → ไม่มี www  (เลือกอันเดียวเป็นหลัก อย่าให้ Google เห็นสองเวอร์ชัน)
+https://www.madilynsecret.com/*   https://madilynsecret.com/:splat   301
+
+# หน้าเก่าจาก Wix → จุดที่ตรงกันบนหน้าใหม่
+# ★ แก้ทางซ้ายให้ตรงกับ URL จริงของเว็บเดิม ดูวิธีหาใน README
+/about              /services.html   301
+/about-us           /services.html   301
+/service            /services.html   301
+/our-services       /services.html   301
+/contact            /services.html#quote      301
+/contact-us         /services.html#quote      301
+/faq                /services.html#faq        301
+/blog               /academy.html    301
+/course             /academy.html    301
+/courses            /academy.html    301
+/home               /            301
+
+# ตาข่ายกันตก — URL เก่าอื่น ๆ ที่ไม่ได้ระบุไว้ ให้ไปหน้าแรกแทนหน้า 404
+/*   /404.html   404
