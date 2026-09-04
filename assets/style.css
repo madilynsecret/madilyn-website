@@ -223,11 +223,22 @@ label{display:block;font-size:var(--fs-xs);opacity:.6;margin-bottom:.28rem;font-
 
 /* ── footer ── */
 footer{background:var(--hull);padding:3.2rem 0 2.6rem;border-top:1px solid var(--line)}
-.foot-in{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;align-items:flex-start}
-footer svg{height:2.4rem;width:auto}
-.foot-meta{font-size:var(--fs-xs);font-weight:200;opacity:.55;line-height:1.95;margin:0}
-.foot-nav{display:flex;flex-direction:column;gap:.4rem}
-.foot-nav a{font-size:var(--fs-sm);text-decoration:none;opacity:.7}
+.foot-in{
+  display:grid;
+  grid-template-columns:auto minmax(140px,1fr) minmax(200px,1.3fr) minmax(200px,1.3fr);
+  gap:2rem 2.6rem;
+  align-items:start;
+}
+footer svg{height:2.6rem;width:auto}
+.foot-meta{font-size:var(--fs-sm);font-weight:300;opacity:.72;line-height:1.9;margin:0}
+.foot-nav{display:flex;flex-direction:column;gap:.6rem}
+.foot-nav a{font-size:var(--fs-md);text-decoration:none;opacity:.82}
+@media (max-width:900px){
+  .foot-in{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  .foot-in{grid-template-columns:1fr}
+}
 
 /* ── sticky mobile bar ── */
 .sticky-bar{display:none}
