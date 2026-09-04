@@ -225,10 +225,11 @@ label{display:block;font-size:var(--fs-xs);opacity:.6;margin-bottom:.28rem;font-
 footer{background:var(--hull);padding:3.2rem 0 2.6rem;border-top:1px solid var(--line)}
 .foot-in{
   display:grid;
-  grid-template-columns:auto minmax(140px,1fr) minmax(200px,1.3fr) minmax(200px,1.3fr);
+  grid-template-columns:minmax(220px,1.3fr) minmax(140px,1fr) minmax(220px,1.3fr);
   gap:2rem 2.6rem;
   align-items:start;
 }
+.foot-brand{display:flex;flex-direction:column;gap:1rem;max-width:320px}
 footer svg{height:2.6rem;width:auto}
 .foot-meta{font-size:var(--fs-sm);font-weight:300;opacity:.72;line-height:1.9;margin:0}
 .foot-nav{display:flex;flex-direction:column;gap:.6rem}
