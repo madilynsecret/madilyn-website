@@ -231,10 +231,10 @@ footer{background:var(--hull);padding:3.2rem 0 2.6rem;border-top:1px solid var(-
 }
 .foot-brand{grid-column:1;grid-row:1}
 .foot-company{grid-column:1;grid-row:2}
-.foot-nav{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:.6rem}
+.foot-nav{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:.5rem}
 .foot-disclaimer{grid-column:3;grid-row:2}
 .foot-meta{font-size:var(--fs-sm);font-weight:300;opacity:.72;line-height:1.9;margin:0}
-.foot-nav a{font-size:var(--fs-sm);text-decoration:none;opacity:.82}
+.foot-nav a{font-size:var(--fs-xs);font-weight:600;text-decoration:none;opacity:.82}
 @media (max-width:900px){
   .foot-in{grid-template-columns:1fr;row-gap:1.6rem}
   .foot-brand,.foot-company,.foot-nav,.foot-disclaimer{grid-column:1;grid-row:auto}
