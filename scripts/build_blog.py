@@ -86,7 +86,7 @@ def build(rec):
     slug = rec["content_id"].lower()
     refs = rec.get("legal_refs", [])
 
-    verify = ('<span class="chip ok">✓ ยืนยันจากแหล่งทางการ</span>' if refs else
+    verify = ('<span class="chip ok">✓ มีแหล่งอ้างอิงทางการ</span>' if refs else
               '<span class="chip check">ต้องตรวจสอบเพิ่มเติมรายกรณี</span>')
 
     legal = ""
