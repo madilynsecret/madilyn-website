@@ -3,17 +3,18 @@
 สร้างหน้าบทความบล็อกจากข้อมูลในตาราง Content (Airtable Academy base)
 Build blog article pages from Content records.
 
-ตอนนี้ (ร่างเทมเพลต) อ่านข้อมูลจากไฟล์ JSON ใน blog/_data/
-ขั้นถัดไปจะเปลี่ยนให้ดึงจาก Airtable เฉพาะบทความที่ Status = Published
-และดึงแค่ตอนมีบทความใหม่ เพื่อประหยัดโควตา API แพ็กเกจฟรี
+สองโหมด:
+  python3 scripts/build_blog.py --airtable          ดึงจาก Airtable (ต้องมี AIRTABLE_TOKEN)
+  python3 scripts/build_blog.py --preview a.json     ทดสอบจากไฟล์ JSON (ไม่แตะรายการบทความ/sitemap)
 
-usage: python3 scripts/build_blog.py blog/_data/ct-cus-0001.json [more.json ...]
+โหมด --airtable สร้างหน้าเฉพาะ record ที่ติ๊ก "Publish to Website (พี่อนุมัติ)"
+และมี Body ครบ ใช้ API ประมาณ 1–4 calls ต่อรอบ เพื่อให้อยู่ในโควตาแพ็กเกจฟรี
 """
 import html, json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-TEMPLATE = (ROOT / "blog" / "_template.html").read_text(encoding="utf-8")
+TEMPLATE = (ROOT / "scripts" / "templates" / "blog-article.html").read_text(encoding="utf-8")
 
 TH_MONTHS = ["", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
              "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."]
@@ -156,10 +157,157 @@ def build(rec):
     if left:
         raise SystemExit(f"placeholders not filled: {left}")
     out = ROOT / "blog" / f"{slug}.html"
+    out.parent.mkdir(exist_ok=True)
     out.write_text(page, encoding="utf-8")
     return out
 
 
+
+
+# ───────────────────────── Airtable ─────────────────────────
+import os, urllib.parse, urllib.request
+
+BASE = "apphKdT7LJHQrMmgN"                     # Academy base
+T_CONTENT, T_AGENCY, T_LEGAL, T_TOPIC = (
+    "tblgJAHlj749M045c", "tblS0QvcZfd0omjj9", "tblJKehxswOhFYRvP", "tblIZL4aduR6I67pw")
+F = dict(  # Content field IDs — ใช้ ID แทนชื่อ เปลี่ยนชื่อช่องใน Airtable ได้โดยไม่พัง
+    title="fldhfhYkYRX2ktWO0", cid="fldOWusGpTZryrcQ6", level="fldRIWNRPkTpyx2uY",
+    summary="fldy05h9cUe6DmwZH", body="fldRtik6F6zSu9dAe", basis="fldaEQS2e4Pw4aIpe",
+    caution="fldZDkOiglF57YRmZ", updated="fldzoXkxZUG082Zlq", agency="fldqoReKspT83IRgO",
+    topic="fldpytArkY28VX3gT", legal="fld4IDEu4CUC0WrRk", publish="fldkraLFzijOHtI22",
+    pubdate="fldFcFHm8QvfnYJnB")
+API_CALLS = 0
+
+
+def at_list(table, formula, fields):
+    """ดึง record ทั้งหมดที่ตรงสูตร (100 ต่อหน้า) — นับจำนวน call ไว้รายงาน"""
+    global API_CALLS
+    out, offset = [], None
+    while True:
+        q = [("filterByFormula", formula), ("returnFieldsByFieldId", "true"), ("pageSize", "100")]
+        q += [("fields[]", f) for f in fields]
+        if offset:
+            q.append(("offset", offset))
+        req = urllib.request.Request(
+            f"https://api.airtable.com/v0/{BASE}/{table}?" + urllib.parse.urlencode(q),
+            headers={"Authorization": "Bearer " + os.environ["AIRTABLE_TOKEN"]})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            data = json.load(r)
+        API_CALLS += 1
+        out += data["records"]
+        offset = data.get("offset")
+        if not offset:
+            return out
+
+
+def by_ids(table, ids, fields):
+    if not ids:
+        return {}
+    formula = "OR(" + ",".join(f"RECORD_ID()='{i}'" for i in sorted(ids)) + ")"
+    return {r["id"]: r["fields"] for r in at_list(table, formula, fields)}
+
+
+def fetch_airtable():
+    recs = at_list(T_CONTENT,
+                   "AND({fldkraLFzijOHtI22}, LEN({fldRtik6F6zSu9dAe})>0, {fldOWusGpTZryrcQ6}!='')",
+                   list(F.values()))
+    if not recs:
+        return []
+    ids = lambda key: {i for r in recs for i in r["fields"].get(F[key], [])}
+    agencies = by_ids(T_AGENCY, ids("agency"), ["fldPFhADVNF32slkv"])
+    legal = by_ids(T_LEGAL, ids("legal"),
+                   ["fldd9MHZY8YsNhmDx", "fld5lc8mMMmOXuHah", "fldQfLsjoYY0JB0cO"])
+    topics = by_ids(T_TOPIC, ids("topic"), ["fldtG5eubkp8u65kz"])
+
+    posts = []
+    for r in recs:
+        f = r["fields"]
+        lv = f.get(F["level"])
+        funnel = next((topics[t].get("fldtG5eubkp8u65kz") for t in f.get(F["topic"], [])
+                       if topics.get(t, {}).get("fldtG5eubkp8u65kz")), "TOFU")
+        posts.append({
+            "record_id": r["id"],
+            "content_id": f[F["cid"]].strip(),
+            "title": f.get(F["title"], "").strip(),
+            "level": lv if isinstance(lv, str) else (lv or {}).get("name", ""),
+            "summary": f.get(F["summary"], "").strip(),
+            "body_md": f[F["body"]],
+            "legal_basis": f.get(F["basis"], ""),
+            "caution_notes": f.get(F["caution"], ""),
+            "updated": f.get(F["updated"]) or r["createdTime"][:10],
+            "published": f.get(F["pubdate"]) or f.get(F["updated"]) or r["createdTime"][:10],
+            "agency": ", ".join(agencies[a]["fldPFhADVNF32slkv"] for a in f.get(F["agency"], [])
+                                if a in agencies),
+            "funnel": funnel if isinstance(funnel, str) else funnel.get("name", "TOFU"),
+            "legal_refs": [{"name": legal[l].get("fldd9MHZY8YsNhmDx", ""),
+                            "number": legal[l].get("fld5lc8mMMmOXuHah", ""),
+                            "url": legal[l]["fldQfLsjoYY0JB0cO"]}
+                           for l in f.get(F["legal"], [])
+                           if l in legal and legal[l].get("fldQfLsjoYY0JB0cO")],
+        })
+    return posts
+
+
+# ─────────────────── รายการบทความ + sitemap ───────────────────
+def replace_between(text, start, end, inner):
+    a, b = text.index(start) + len(start), text.index(end)
+    return text[:a] + inner + text[b:]
+
+
+def update_listing(posts):
+    cards = "".join(
+        f'\n      <a class="art" href="blog/{p["content_id"].lower()}.html">'
+        f'\n        <span class="meta">{html.escape(p["agency"] or "Academy")} · {thai_date(p["updated"])}</span>'
+        f'\n        <h3>{html.escape(p["title"])}</h3>'
+        f'\n        <p>{html.escape(p["summary"])}</p>\n      </a>'
+        for p in posts)
+    art = ROOT / "articles.html"
+    art.write_text(replace_between(art.read_text(encoding="utf-8"),
+                                   "<!-- BLOG:START -->", "<!-- BLOG:END -->", cards + "\n      "),
+                   encoding="utf-8")
+    urls = "".join(
+        f'\n<url>\n<loc>https://madilynsecret.com/blog/{p["content_id"].lower()}.html</loc>'
+        f'\n<lastmod>{p["updated"]}</lastmod>\n<changefreq>monthly</changefreq>\n<priority>0.7</priority>\n</url>'
+        for p in posts)
+    sm = ROOT / "sitemap.xml"
+    sm.write_text(replace_between(sm.read_text(encoding="utf-8"),
+                                  "<!-- BLOG:START -->", "<!-- BLOG:END -->", urls + "\n"),
+                  encoding="utf-8")
+
+
+def related_for(post, posts):
+    same = [p for p in posts if p is not post and p["agency"] and p["agency"] == post["agency"]]
+    others = [p for p in posts if p is not post and p not in same]
+    picks = (same + others)[:3]
+    rel = [{"href": f'{p["content_id"].lower()}.html', "label": f'บทความ · {p["agency"] or "Academy"}',
+            "title": p["title"]} for p in picks]
+    if len(rel) < 2:
+        rel.append({"href": "../academy/", "label": "Academy", "title": "เรียนต่อใน Academy — 8 Schools ฟรี"})
+    return rel
+
+
+def run_airtable():
+    posts = sorted(fetch_airtable(), key=lambda p: p["published"], reverse=True)
+    blog = ROOT / "blog"
+    keep = set()
+    for p in posts:
+        p["related"] = related_for(p, posts)
+        keep.add(build(p).name)
+    removed = []
+    if blog.exists():
+        for old in blog.glob("*.html"):
+            if old.name not in keep:
+                old.unlink()
+                removed.append(old.name)
+    update_listing(posts)
+    print(f"published {len(posts)} | removed {len(removed)} {removed} | Airtable API calls used: {API_CALLS}")
+
+
 if __name__ == "__main__":
-    for p in sys.argv[1:]:
-        print(build(json.loads(Path(p).read_text(encoding="utf-8"))))
+    if sys.argv[1:2] == ["--airtable"]:
+        run_airtable()
+    elif sys.argv[1:2] == ["--preview"]:
+        for path in sys.argv[2:]:
+            print(build(json.loads(Path(path).read_text(encoding="utf-8"))))
+    else:
+        raise SystemExit(__doc__)

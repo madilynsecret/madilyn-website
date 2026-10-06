@@ -1,0 +1,54 @@
+# สร้างหน้าบทความบล็อกจาก Airtable แล้ว deploy อัตโนมัติ (Cloudflare Pages build ตาม commit)
+# รันทุกวัน 06:07 น. เวลาไทย + กดรันเองได้ที่แท็บ Actions → "Build blog from Airtable" → Run workflow
+# ใช้ Airtable API ประมาณ 1–4 calls ต่อรอบ และ GitHub Actions ราว 1 นาทีต่อรอบ (อยู่ในโควตาฟรี)
+name: Build blog from Airtable
+
+on:
+  schedule:
+    - cron: "7 23 * * *"   # 23:07 UTC = 06:07 Bangkok
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-blog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Airtable token
+        id: token
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: |
+          if [ -z "$AIRTABLE_TOKEN" ]; then
+            echo "::warning::ยังไม่ได้ใส่ secret AIRTABLE_TOKEN — ข้ามรอบนี้"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build pages
+        if: steps.token.outputs.ok == 'true'
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: python3 scripts/build_blog.py --airtable
+
+      - name: Commit if anything changed
+        if: steps.token.outputs.ok == 'true'
+        run: |
+          git add -A blog articles.html sitemap.xml
+          if git diff --cached --quiet; then
+            echo "ไม่มีบทความเปลี่ยน — ไม่ต้อง deploy"
+          else
+            git config user.name  "madilyn-blog-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git commit -m "Blog: sync published articles from Airtable"
+            git push
+          fi
