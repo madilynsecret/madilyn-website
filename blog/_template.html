@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{title}} | Madilyn's Secret Academy</title>
+<meta name="description" content="{{summary_attr}}">
+<meta property="og:title" content="{{title}} | Madilyn's Secret Academy">
+<meta property="og:description" content="{{summary_attr}}">
+<meta property="og:image" content="https://madilynsecret.com/og-image.png">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B2545">
+<link rel="canonical" href="https://madilynsecret.com/blog/{{slug}}.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&family=Prompt:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+/* ส่วนเสริมเฉพาะหน้าบทความบล็อก — ไม่แตะ style.css กลาง */
+.post-meta{display:flex;flex-wrap:wrap;gap:.5rem .6rem;align-items:center;margin-top:1.2rem}
+.chip{display:inline-flex;align-items:center;gap:.35rem;font-size:var(--fs-xs);font-weight:400;
+  padding:.28rem .7rem;border-radius:999px;border:1px solid var(--line-hi);white-space:nowrap}
+.chip.level{border-color:var(--teal);color:var(--teal-hi)}
+.chip.ok{border-color:rgba(79,195,140,.55);color:#7FD8A8}
+.chip.check{border-color:rgba(200,160,69,.6);color:var(--gold-hi)}
+.chip.id{font-family:'Poppins',sans-serif;opacity:.6}
+.post-lede{font-size:var(--fs-lg);font-weight:200;opacity:.82;max-width:62ch;margin-top:1rem}
+.box{border:1px solid var(--line-hi);border-radius:14px;padding:1.3rem 1.4rem;margin-top:2.2rem}
+.box h2{font-size:var(--fs-h3);margin:0 0 .6rem}
+.box p,.box li{font-size:var(--fs-md)}
+.box.legal{border-left:4px solid var(--teal)}
+.box.caution{border-left:4px solid var(--gold)}
+.box ul{padding-left:1.2rem;margin:.4rem 0 0}
+.sources li{margin-bottom:.35rem}
+.sources a{color:var(--teal-hi)}
+.en-note{border:1px dashed var(--line-hi);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.6rem;font-size:var(--fs-sm)}
+.related{display:grid;gap:.8rem;margin-top:1rem}
+.related a{display:block;border:1px solid var(--line);border-radius:12px;padding:.9rem 1.1rem;color:var(--cream);text-decoration:none}
+.related a:hover{border-color:var(--signal)}
+.related small{display:block;opacity:.55;font-size:var(--fs-xs)}
+</style>
+<script type="application/ld+json">
+{{jsonld}}
+</script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="../index.html" aria-label="Madilyn's Secret">
+      <svg viewBox="0 0 220 200" aria-hidden="true">
+  <circle cx="72" cy="100" r="50" fill="none" stroke="#F7F3EC" stroke-width="16"/>
+  <ellipse cx="72" cy="100" rx="19" ry="42" fill="none" stroke="#F7F3EC" stroke-width="7"/>
+  <line x1="30" y1="100" x2="114" y2="100" stroke="#F7F3EC" stroke-width="7"/>
+  <rect x="116" y="91" width="72" height="18" fill="#C8A045"/>
+  <rect x="146" y="109" width="15" height="28" fill="#C8A045"/>
+  <rect x="171" y="109" width="15" height="18" fill="#C8A045"/>
+</svg><b>MADILYN'S SECRET</b>
+    </a>
+    <nav class="nav-links">
+      <a class="navlink" href="../index.html"><span class="t-th">หน้าแรก</span><span class="t-en">Home</span></a><a class="navlink" href="../services.html"><span class="t-th">บริการ</span><span class="t-en">Services</span></a><a class="navlink" href="../academy.html"><span class="t-th">Academy</span><span class="t-en">Academy</span></a><a class="navlink" href="../articles.html" aria-current="page"><span class="t-th">บทความ</span><span class="t-en">Articles</span></a>
+      <div class="langsw" role="group" aria-label="Language">
+        <button type="button" data-lang="th">TH</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a class="btn btn-gold" href="../services.html#quote"><span class="t-th">ขอใบเสนอราคา</span><span class="t-en">Get a quote</span></a>
+    </nav>
+  </div>
+</header>
+
+<article>
+<section class="hero" style="padding-bottom:2rem">
+  <div class="wrap">
+    <p class="crumb"><a href="../articles.html"><span class="t-th">บทความ</span><span class="t-en">Articles</span></a> · {{agency}}</p>
+    <h1 style="max-width:24ch">{{title}}</h1>
+    <p class="post-lede">{{summary}}</p>
+    <div class="post-meta">
+      <span class="chip level">{{level}}</span>
+      {{verify_chip}}
+      <span class="chip"><span class="t-th">อัปเดตล่าสุด</span><span class="t-en">Last updated</span>&nbsp;{{updated_th}}</span>
+      <span class="chip id">{{content_id}}</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:2.4rem">
+  <div class="wrap">
+    <div class="prose">
+      <p class="en-note t-en">This article is currently available in Thai only. An English version will follow.</p>
+
+      {{body_html}}
+
+      {{legal_box}}
+
+      {{caution_box}}
+
+      <div class="callout" style="margin-top:2.2rem">
+        <p>บทความนี้เป็นข้อมูลทั่วไปเพื่อการศึกษา ไม่ใช่คำแนะนำทางกฎหมายหรือคำวินิจฉัยทางศุลกากร ข้อมูลถูกต้อง ณ วันที่ {{updated_th}} และอาจเปลี่ยนแปลงได้ กรุณาตรวจสอบประกาศฉบับล่าสุดจากหน่วยงานที่เกี่ยวข้องก่อนดำเนินการ</p>
+      </div>
+
+      {{cta_block}}
+
+      {{related_block}}
+    </div>
+  </div>
+</section>
+</article>
+
+<footer>
+  <div class="wrap foot-in">
+    <a class="brand foot-brand" href="../index.html" aria-label="Madilyn's Secret">
+      <svg viewBox="0 0 220 200" aria-hidden="true">
+  <circle cx="72" cy="100" r="50" fill="none" stroke="#F7F3EC" stroke-width="16"/>
+  <ellipse cx="72" cy="100" rx="19" ry="42" fill="none" stroke="#F7F3EC" stroke-width="7"/>
+  <line x1="30" y1="100" x2="114" y2="100" stroke="#F7F3EC" stroke-width="7"/>
+  <rect x="116" y="91" width="72" height="18" fill="#C8A045"/>
+  <rect x="146" y="109" width="15" height="28" fill="#C8A045"/>
+  <rect x="171" y="109" width="15" height="18" fill="#C8A045"/>
+</svg><b>MADILYN'S SECRET</b>
+    </a>
+    <p class="foot-meta foot-company">
+      <span class="t-th">บริษัท เมดิลินส์ ซีเครท (ไทยแลนด์) จำกัด</span><span class="t-en">Madilyn's Secret (Thailand) Co., Ltd.</span><br>
+      <span class="t-th">Madilyn's Secret (Thailand) Co., Ltd.</span><span class="t-en">บริษัท เมดิลินส์ ซีเครท (ไทยแลนด์) จำกัด</span><br>
+      <span class="t-th">เลขทะเบียนนิติบุคคล</span><span class="t-en">Company registration no.</span> 0105560189561<br>
+      <span class="t-th">โทร</span><span class="t-en">Tel</span> 085-559-0903<br>
+      © 2026 <span class="t-th">สงวนลิขสิทธิ์</span><span class="t-en">All rights reserved</span>
+    </p>
+    <nav class="foot-nav">
+      <a href="../index.html"><span class="t-th">หน้าแรก</span><span class="t-en">Home</span></a>
+      <a href="../services.html"><span class="t-th">บริการ</span><span class="t-en">Services</span></a>
+      <a href="../academy.html"><span class="t-th">ศูนย์เรียนรู้</span><span class="t-en">Academy</span></a>
+      <a href="../articles.html"><span class="t-th">บทความอ่านฟรี</span><span class="t-en">Free articles</span></a>
+      <a href="../services.html#quote"><span class="t-th">ขอใบเสนอราคา</span><span class="t-en">Get a quote</span></a>
+    </nav>
+    <p class="foot-meta foot-disclaimer">
+      <span class="t-th">เนื้อหาความรู้บนเว็บไซต์นี้จัดทำเพื่อการศึกษา</span><span class="t-en">Educational content on this site is for general information</span><br>
+      <span class="t-th">ไม่ใช่คำวินิจฉัยทางกฎหมายหรือคำสั่งทางศุลกากร</span><span class="t-en">It is not legal advice or a customs ruling</span><br>
+      <span class="t-th">กรุณาตรวจสอบประกาศฉบับล่าสุดของหน่วยงานที่เกี่ยวข้อง</span><span class="t-en">Always check the latest notifications from the relevant authority</span>
+    </p>
+  </div>
+</footer>
+
+<div class="sticky-bar">
+  <a class="btn btn-ghost" href="tel:0855590903"><span class="t-th">โทรเลย</span><span class="t-en">Call</span></a>
+  <a class="btn btn-gold" href="../services.html#quote"><span class="t-th">ขอใบเสนอราคา</span><span class="t-en">Get a quote</span></a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>
