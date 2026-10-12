@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://madilynsecret.com/landed-cost.html">
+<meta property="og:title" content="คำนวณต้นทุนนำเข้า (Landed Cost) ฟรี | Madilyn's Secret">
+<meta property="og:image" content="https://madilynsecret.com/og-image.png">
+<meta property="og:type" content="website">
+<title>คำนวณต้นทุนนำเข้า (Landed Cost) ฟรี | Madilyn's Secret</title>
+<meta name="description" content="เครื่องมือคำนวณต้นทุนนำเข้าต่อชิ้น รองรับหลายรายการในล็อตเดียว รวมอากร VAT ค่าขนส่ง และค่าใช้จ่ายในประเทศ ใช้ฟรี ไม่เก็บข้อมูลที่กรอก">
+<meta name="theme-color" content="#0B2545">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&family=Prompt:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.lc-wrap{max-width:980px;margin:0 auto;padding:0 20px 70px}
+.lc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.lc-grid.g3{grid-template-columns:repeat(3,1fr)}
+.lc-grid .full{grid-column:1/-1}
+@media(max-width:700px){.lc-grid,.lc-grid.g3{grid-template-columns:1fr}}
+.lc-card{background:rgba(7,26,49,.55);border:1px solid var(--line-hi);border-radius:14px;padding:22px 22px 24px;margin-top:22px}
+.lc-card h2{margin:0 0 4px;font-size:var(--fs-h3);font-weight:500;color:var(--gold-hi)}
+.lc-card .sub{margin:0 0 16px;font-size:var(--fs-sm);color:var(--signal)}
+.lc-card label{display:block;font-size:var(--fs-sm);color:var(--signal);margin:0 0 5px}
+.lc-card input,.lc-card select{width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--line-hi);background:#0B2545;color:var(--cream);font:inherit;font-size:var(--fs-md)}
+.lc-card input:focus,.lc-card select:focus{outline:2px solid var(--teal-hi);outline-offset:1px}
+.lc-hint{font-size:var(--fs-xs);color:var(--signal);opacity:.85;margin:4px 0 0;line-height:1.5}
+.lc-item{border:1px solid var(--line-hi);border-radius:12px;padding:16px;margin-bottom:14px;background:rgba(11,37,69,.6)}
+.lc-item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;color:var(--gold-hi);font-weight:500}
+.lc-rm{background:transparent;border:1px solid var(--line-hi);color:var(--signal);border-radius:8px;padding:4px 12px;cursor:pointer;font:inherit;font-size:var(--fs-sm)}
+.lc-rm:hover{border-color:var(--teal-hi);color:var(--cream)}
+.lc-res-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:6px}
+@media(max-width:700px){.lc-res-grid{grid-template-columns:1fr}}
+.lc-res{background:#0B2545;border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+.lc-res .k{font-size:var(--fs-xs);color:var(--signal)}
+.lc-res .v{font-size:1.28rem;font-weight:500;margin-top:2px;font-variant-numeric:tabular-nums}
+.lc-res.total{grid-column:1/-1;background:var(--teal);border-color:var(--teal-hi)}
+.lc-res.total .k{color:#E3F5F9}
+.lc-res.total .v{font-size:1.7rem}
+.lc-tablewrap{overflow-x:auto;margin-top:18px;border:1px solid var(--line-hi);border-radius:11px}
+.lc-table{border-collapse:collapse;width:100%;min-width:860px;font-size:var(--fs-sm);font-variant-numeric:tabular-nums}
+.lc-table th,.lc-table td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line)}
+.lc-table th:first-child,.lc-table td:first-child{text-align:left;position:sticky;left:0;background:#0B2545}
+.lc-table th{color:var(--signal);font-weight:400;font-size:var(--fs-xs);background:#071A31}
+.lc-table tfoot td{font-weight:500;color:var(--gold-hi);border-bottom:0}
+.lc-warn{margin-top:14px;padding:11px 14px;border-radius:10px;border:1px solid var(--teal-hi);background:rgba(79,195,217,.08);font-size:var(--fs-sm);line-height:1.6}
+.lc-note{margin-top:18px;padding:13px 16px;border-radius:11px;border:1px solid var(--gold);background:rgba(200,160,69,.1);font-size:var(--fs-sm);line-height:1.65}
+.lc-reset{background:transparent;color:var(--cream);border:1px solid var(--line-hi)}
+.lc-reset:hover{border-color:var(--teal-hi)}
+#incoHint{margin:8px 0 18px}
+.lc-inco{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.lc-inco button{flex:1 1 120px;padding:11px 14px;border-radius:10px;border:1px solid var(--line-hi);background:transparent;color:var(--cream);font:inherit;cursor:pointer;text-align:left}
+.lc-inco button b{display:block;font-weight:500}
+.lc-inco button small{opacity:.75;font-size:var(--fs-xs)}
+.lc-inco button.on{border-color:var(--gold);background:rgba(200,160,69,.14);color:var(--gold-hi)}
+.lc-btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-label="Madilyn's Secret">
+      <svg viewBox="0 0 220 200" aria-hidden="true">
+  <circle cx="72" cy="100" r="50" fill="none" stroke="#F7F3EC" stroke-width="16"/>
+  <ellipse cx="72" cy="100" rx="19" ry="42" fill="none" stroke="#F7F3EC" stroke-width="7"/>
+  <line x1="30" y1="100" x2="114" y2="100" stroke="#F7F3EC" stroke-width="7"/>
+  <rect x="116" y="91" width="72" height="18" fill="#C8A045"/>
+  <rect x="146" y="109" width="15" height="28" fill="#C8A045"/>
+  <rect x="171" y="109" width="15" height="18" fill="#C8A045"/>
+</svg><b>MADILYN'S SECRET</b>
+    </a>
+    <nav class="nav-links">
+      <a class="navlink" href="index.html"><span class="t-th">หน้าแรก</span><span class="t-en">Home</span></a><a class="navlink" href="services.html"><span class="t-th">บริการ</span><span class="t-en">Services</span></a><a class="navlink" href="academy.html"><span class="t-th">Academy</span><span class="t-en">Academy</span></a><a class="navlink" href="articles.html"><span class="t-th">บทความ</span><span class="t-en">Articles</span></a>
+      <div class="langsw" role="group" aria-label="Language">
+        <button type="button" data-lang="th">TH</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a class="btn btn-gold" href="services.html#quote"><span class="t-th">ขอใบเสนอราคา</span><span class="t-en">Get a quote</span></a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero"><div class="wrap">
+  <p class="eyebrow teal">Madilyn's Secret Academy</p>
+  <h1><span class="t-th">คำนวณต้นทุนนำเข้า <em>(Landed Cost)</em></span><span class="t-en">Import landed-cost <em>calculator</em></span></h1>
+  <p class="lede"><span class="t-th">คำนวณต้นทุนจริงต่อชิ้นของสินค้านำเข้า รวมอากร VAT ค่าขนส่ง และค่าใช้จ่ายในประเทศ ก่อนตั้งราคาขาย ใช้ฟรีสำหรับสินค้า 1 รายการ ไม่เก็บข้อมูลที่กรอก</span><span class="t-en">Work out the real cost per unit of an imported product, including duty, VAT, freight and local costs, before you set a price. Free for one product, and nothing you type is stored.</span></p>
+</div></section>
+
+<main class="lc-wrap">
+ <div class="lc-card">
+  <h2><span class="t-th">1) รายการสินค้า</span><span class="t-en">1) Products</span></h2>
+  <p class="sub"><span class="t-th">เวอร์ชันฟรีคำนวณได้ครั้งละ 1 รายการสินค้า (ทั้งล็อต)</span><span class="t-en">The free version calculates one product at a time.</span></p>
+  <div id="items"></div>
+  <div class="lc-note" style="margin-top:14px"><strong><span class="t-th">🔒 หลายรายการในล็อตเดียว: อยู่ในเวอร์ชันเต็ม (เปิดให้บริการเร็ว ๆ นี้)</span><span class="t-en">🔒 Several products in one shipment: part of the full version (coming soon)</span></strong><br><span class="t-th">ถ้าตู้หนึ่งมีสินค้าหลายอย่างและค่าขนส่งคิดรวม เวอร์ชันเต็มจะแบ่งค่าขนส่ง ประกัน และค่าใช้จ่ายร่วมให้แต่ละรายการ พร้อมต้นทุนต่อชิ้นของทุกรายการ ตอนนี้ฟรีใช้คำนวณได้ทีละ 1 รายการ</span><span class="t-en">When one container holds several products and freight is quoted as a lump sum, the full version splits freight, insurance and shared costs across every item and gives the cost per unit of each. For now the free tool handles one product at a time.</span></div>
+ </div>
+
+ <div class="lc-card">
+  <h2><span class="t-th">2) ค่าขนส่งและค่าใช้จ่ายร่วมของทั้งล็อต</span><span class="t-en">2) Shared freight and costs for the whole shipment</span></h2>
+  <p class="sub"><span class="t-th">ใส่ยอดรวมจากใบเสนอราคาของชิปปิ้งหรือผู้ให้บริการขนส่ง</span><span class="t-en">Enter the totals from your broker or forwarder quote.</span></p>
+  <label style="display:block;margin-top:10px"><span class="t-th">ราคาในใบแจ้งหนี้ของผู้ขายเป็นเงื่อนไขอะไร (Incoterms)</span><span class="t-en">What price term is on the supplier's invoice (Incoterms)?</span></label>
+  <div class="lc-inco" id="inco">
+   <button type="button" data-inco="EXW"><b>EXW</b><small><span class="t-th">ราคาหน้าโรงงาน ยังไม่รวมอะไรเลย</span><span class="t-en">Ex Works: nothing included</span></small></button>
+   <button type="button" data-inco="FOB" class="on"><b>FOB</b><small><span class="t-th">รวมถึงขึ้นเรือต้นทาง ยังไม่รวมค่าระวางและประกัน</span><span class="t-en">Loaded on board; freight and insurance not included</span></small></button>
+   <button type="button" data-inco="CIF"><b>CIF</b><small><span class="t-th">รวมค่าระวางและประกันถึงไทยแล้ว</span><span class="t-en">Freight and insurance to Thailand included</span></small></button>
+   <button type="button" data-inco="DAP"><b>DAP / DPU</b><small><span class="t-th">ผู้ขายส่งถึงจุดหมายในไทย คุณทำพิธีการและจ่ายอากร VAT เอง</span><span class="t-en">Seller delivers to a place in Thailand; you clear customs and pay duty and VAT</span></small></button>
+   <button type="button" data-inco="DDP"><b>DDP</b><small><span class="t-th">ผู้ขายจ่ายอากรและ VAT แล้ว ส่งถึงมือคุณ</span><span class="t-en">Seller pays duty and VAT and delivers to you</span></small></button>
+  </div>
+  <p class="lc-hint" id="incoHint"></p>
+  <div class="lc-grid">
+   <div class=""><label for="rate"><span class="t-th">อัตราแลกเปลี่ยนเป็นบาท (ใช้กับมูลค่าสินค้าทุกรายการ)</span><span class="t-en">Exchange rate to THB (applies to all item values)</span></label><input id="rate" type="number" inputmode="decimal" min="0" step="any" placeholder="1" value="1"><p class="lc-hint">ถ้ามูลค่าเป็นบาทอยู่แล้วใช้ 1 ศุลกากรจะใช้อัตราตามที่กรมศุลกากรประกาศ ผลจริงอาจต่างเล็กน้อย</p></div>
+   <div class=""><label for="vat"><span class="t-th">อัตรา VAT (%)</span><span class="t-en">VAT rate (%)</span></label><input id="vat" type="number" inputmode="decimal" min="0" step="any" placeholder="7" value="7"><p class="lc-hint">ค่าเริ่มต้น 7% ซึ่งเป็นอัตราลดพิเศษที่ต่ออายุเป็นระยะ ตรวจอัตราล่าสุดกับกรมสรรพากรก่อนใช้งาน สินค้าบางประเภท เช่น วัตถุดิบเกษตรบางชนิด อาจได้รับยกเว้น VAT ให้ติ๊กช่อง ยกเว้น VAT ที่รายการสินค้า และตรวจกับชิปปิ้ง</p></div>
+   <div class=""><label for="origin"><span class="t-th">ค่าใช้จ่ายต้นทางก่อนขึ้นเรือ (บาท) เช่น รถจากโรงงานไปท่า พิธีการส่งออก</span><span class="t-en">Origin charges before loading (THB), e.g. factory-to-port trucking, export clearance</span></label><input id="origin" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value=""></div>
+   <div class=""><label for="freight"><span class="t-th">ค่าขนส่งระหว่างประเทศรวม (บาท)</span><span class="t-en">Total international freight (THB)</span></label><input id="freight" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value=""></div>
+   <div class=""><label for="insurance"><span class="t-th">ค่าประกันภัยรวม (บาท)</span><span class="t-en">Total cargo insurance (THB)</span></label><input id="insurance" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value=""><p class="lc-hint">ระบบแบ่งค่าประกันตามมูลค่าสินค้า</p></div>
+   <div class=""><label for="port"><span class="t-th">ค่าท่า / ค่าใบสั่งปล่อยสินค้า (บาท)</span><span class="t-en">Port / delivery-order charges (THB)</span></label><input id="port" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value=""></div>
+   <div class=""><label for="broker"><span class="t-th">ค่าชิปปิ้ง / ค่าดำเนินพิธีการ (บาท)</span><span class="t-en">Customs broker fees (THB)</span></label><input id="broker" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value=""></div>
+   <div class=""><label for="truck"><span class="t-th">ค่ารถขนส่งในประเทศ (บาท)</span><span class="t-en">Domestic trucking (THB)</span></label><input id="truck" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value=""></div>
+   <div class=""><label for="wh"><span class="t-th">ค่าโกดัง / อื่น ๆ (บาท)</span><span class="t-en">Warehouse / other (THB)</span></label><input id="wh" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value=""></div>
+   <div hidden><div><label for="basisF"><span class="t-th">แบ่งค่าขนส่งระหว่างประเทศตาม</span><span class="t-en">Split international freight by</span></label><select id="basisF">
+<option value="value">มูลค่าสินค้า / By value</option>
+<option value="weight">น้ำหนัก / By weight</option>
+<option value="cbm">ปริมาตร (CBM) / By volume</option>
+<option value="qty">จำนวนชิ้น / By quantity</option></select></div>
+   <div><label for="basisL"><span class="t-th">แบ่งค่าใช้จ่ายในประเทศตาม</span><span class="t-en">Split local costs by</span></label><select id="basisL">
+<option value="value">มูลค่าสินค้า / By value</option>
+<option value="weight">น้ำหนัก / By weight</option>
+<option value="cbm">ปริมาตร (CBM) / By volume</option>
+<option value="qty">จำนวนชิ้น / By quantity</option></select></div></div>
+   <div class="full"><label for="margin"><span class="t-th">กำไรขั้นต้นที่ต้องการ (%) ไม่บังคับ</span><span class="t-en">Target gross margin (%), optional</span></label><input id="margin" type="number" inputmode="decimal" min="0" step="any" placeholder="เช่น 30" value=""></div>
+  </div>
+  <div class="lc-btnrow"><button class="btn btn-gold" type="button" id="calc"><span class="t-th">คำนวณต้นทุน</span><span class="t-en">Calculate</span></button><button class="btn lc-reset" type="button" id="reset"><span class="t-th">ล้างค่า</span><span class="t-en">Reset</span></button></div>
+ </div>
+
+ <div class="lc-card" id="out" style="display:none" aria-live="polite">
+  <h2><span class="t-th">ผลคำนวณ</span><span class="t-en">Result</span></h2>
+  <p class="sub"><span class="t-th">ตัวเลขประมาณการเพื่อวางแผนเท่านั้น</span><span class="t-en">An estimate for planning only.</span></p>
+  <div id="warns"></div>
+  <div class="lc-res-grid">
+   <div class="lc-res"><div class="k"><span class="t-th">มูลค่า CIF รวม</span><span class="t-en">Total CIF value</span></div><div class="v" id="r-cif">-</div></div>
+   <div class="lc-res"><div class="k"><span class="t-th">อากรขาเข้ารวม</span><span class="t-en">Total import duty</span></div><div class="v" id="r-duty">-</div></div>
+   <div class="lc-res"><div class="k"><span class="t-th">VAT นำเข้ารวม</span><span class="t-en">Total import VAT</span></div><div class="v" id="r-vat">-</div></div>
+   <div class="lc-res"><div class="k"><span class="t-th">ค่าใช้จ่ายในประเทศ + ภาษีอื่น</span><span class="t-en">Local costs + other taxes</span></div><div class="v" id="r-local">-</div></div>
+   <div class="lc-res total"><div class="k"><span class="t-th">ต้นทุนรวมทั้งล็อต (รวม VAT)</span><span class="t-en">Total landed cost (incl. VAT)</span></div><div class="v" id="r-total">-</div></div>
+  </div>
+  <div class="lc-tablewrap"><table class="lc-table">
+   <thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody><tfoot id="tfoot"></tfoot>
+  </table></div>
+  <div class="lc-note"><span class="t-th"><b>อ่านก่อนใช้ตัวเลข:</b> ถ้าคุณจดทะเบียนภาษีมูลค่าเพิ่ม VAT ที่จ่ายตอนนำเข้ามักขอเครดิตเป็นภาษีซื้อได้ ให้ใช้ต้นทุนแบบ "ไม่รวม VAT" ในการตั้งราคา ถ้าไม่ได้จดทะเบียน ให้ใช้แบบรวม VAT และสอบถามนักบัญชี การแบ่งค่าขนส่งในตารางเป็นการประมาณ ใบขนจริงอาจแบ่งต่างออกไป ภาษีและอากรจริงคำนวณโดยกรมศุลกากรตอนทำพิธีการ ตัวเลขนี้ไม่ใช่คำวินิจฉัยทางกฎหมายหรือยอดชำระจริง</span><span class="t-en"><b>Before you rely on this:</b> if you are VAT-registered, import VAT can usually be claimed as input tax, so price from the "excl. VAT" cost. If not, use the VAT-inclusive cost, and check with your accountant. The freight split here is an estimate; the actual declaration may split it differently. Actual duty and tax are assessed by Thai Customs at clearance. This is not legal advice or an amount payable.</span></div>
+  <div class="lc-btnrow">
+   <a class="btn btn-teal" href="https://lin.ee/JryPwpiH" target="_blank" rel="noopener"><span class="t-th">ให้ทีมช่วยตรวจตัวเลขทาง LINE</span><span class="t-en">Have our team check the numbers on LINE</span></a>
+   <a class="btn btn-ghost" href="services.html#quote"><span class="t-th">ขอใบเสนอราคาค่าขนส่งและพิธีการ</span><span class="t-en">Request a freight and clearance quote</span></a>
+  </div>
+ </div>
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <a class="brand foot-brand" href="index.html" aria-label="Madilyn's Secret">
+      <svg viewBox="0 0 220 200" aria-hidden="true">
+  <circle cx="72" cy="100" r="50" fill="none" stroke="#F7F3EC" stroke-width="16"/>
+  <ellipse cx="72" cy="100" rx="19" ry="42" fill="none" stroke="#F7F3EC" stroke-width="7"/>
+  <line x1="30" y1="100" x2="114" y2="100" stroke="#F7F3EC" stroke-width="7"/>
+  <rect x="116" y="91" width="72" height="18" fill="#C8A045"/>
+  <rect x="146" y="109" width="15" height="28" fill="#C8A045"/>
+  <rect x="171" y="109" width="15" height="18" fill="#C8A045"/>
+</svg><b>MADILYN'S SECRET</b>
+    </a>
+    <p class="foot-meta foot-company">
+      <span class="t-th">บริษัท เมดิลินส์ ซีเครท (ไทยแลนด์) จำกัด</span><span class="t-en">Madilyn's Secret (Thailand) Co., Ltd.</span><br>
+      <span class="t-th">Madilyn's Secret (Thailand) Co., Ltd.</span><span class="t-en">บริษัท เมดิลินส์ ซีเครท (ไทยแลนด์) จำกัด</span><br>
+      <span class="t-th">เลขทะเบียนนิติบุคคล</span><span class="t-en">Company registration no.</span> 0105560189561<br>
+      <span class="t-th">โทร</span><span class="t-en">Tel</span> 085-559-0903<br>
+      © 2026 <span class="t-th">สงวนลิขสิทธิ์</span><span class="t-en">All rights reserved</span>
+    </p>
+    <nav class="foot-nav">
+      <a href="index.html"><span class="t-th">หน้าแรก</span><span class="t-en">Home</span></a>
+      <a href="services.html"><span class="t-th">บริการ</span><span class="t-en">Services</span></a>
+      <a href="academy.html"><span class="t-th">ศูนย์เรียนรู้</span><span class="t-en">Academy</span></a>
+      <a href="articles.html"><span class="t-th">บทความอ่านฟรี</span><span class="t-en">Free articles</span></a>
+      <a href="services.html#quote"><span class="t-th">ขอใบเสนอราคา</span><span class="t-en">Get a quote</span></a>
+    </nav>
+    <p class="foot-meta foot-disclaimer">
+      <span class="t-th">เนื้อหาความรู้บนเว็บไซต์นี้จัดทำเพื่อการศึกษา</span><span class="t-en">Educational content on this site is for general information</span><br>
+      <span class="t-th">ไม่ใช่คำวินิจฉัยทางกฎหมายหรือคำสั่งทางศุลกากร</span><span class="t-en">It is not legal advice or a customs ruling</span><br>
+      <span class="t-th">กรุณาตรวจสอบประกาศฉบับล่าสุดของหน่วยงานที่เกี่ยวข้อง</span><span class="t-en">Always check the latest notifications from the relevant authority</span>
+    </p>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  var MAX=1, count=0, inco='FOB';
+  var hints={EXW:['ใส่ค่าใช้จ่ายต้นทาง ค่าระวาง และค่าประกันที่คุณต้องจ่ายเอง ระบบบวกเข้าเป็นมูลค่า CIF ให้','Enter origin charges, freight and insurance you pay yourself; they are added to reach the CIF value.'],FOB:['ใส่ค่าระวางและค่าประกันที่คุณต้องจ่ายเอง ระบบบวกเข้าเป็นมูลค่า CIF ให้','Enter the freight and insurance you pay yourself; they are added to reach the CIF value.'],DAP:['ผู้ขายจัดส่งถึงจุดหมายในไทย ค่าระวางและประกันอยู่ในราคาแล้ว จึงไม่ต้องกรอก คุณยังต้องจ่ายอากร VAT และค่าพิธีการเอง ให้กรอกเฉพาะค่าใช้จ่ายในประเทศที่คุณจ่ายเอง ถ้าราคารวมค่าขนส่งในประเทศหลังผ่านด่านด้วย มูลค่า CIF ที่ได้จะสูงกว่าที่ศุลกากรใช้จริงเล็กน้อย','The seller delivers to a place in Thailand and freight and insurance are in the price, so skip them. You still pay duty, VAT and clearance. Enter only the local costs you pay. If the price also covers inland delivery after clearance, the CIF shown will be a little higher than what Customs uses.'],DDP:['ผู้ขายจ่ายอากรและ VAT ไว้แล้วและรวมอยู่ในราคา ระบบจึงไม่คิดอากรและ VAT เพิ่ม ให้กรอกเฉพาะค่าใช้จ่ายที่คุณจ่ายเองหลังรับของ ข้อควรระวัง VAT ที่ผู้ขายจ่ายมักขอเครดิตภาษีซื้อไม่ได้ ควรตรวจกับนักบัญชี','The seller has paid duty and VAT and they are inside the price, so none is added. Enter only costs you pay after delivery. Note: VAT paid by the seller usually cannot be claimed by you as input tax; check with your accountant.'],CIF:['มูลค่าในใบแจ้งหนี้รวมค่าระวางและประกันแล้ว จึงไม่ต้องกรอกส่วนนี้ ถ้าเป็น CFR (รวมค่าระวางแต่ไม่รวมประกัน) ให้เลือก CIF ได้ ส่วนค่าประกันที่ขาดไปมักน้อยมาก','The invoice already includes freight and insurance, so skip those fields. For CFR (freight included, insurance not) you can still pick CIF; the missing insurance is usually small.']};
+  function setInco(v){
+    inco=v;
+    [].forEach.call(document.querySelectorAll('#inco button'),function(b){b.classList.toggle('on',b.getAttribute('data-inco')===v)});
+    ['origin','freight','insurance'].forEach(function(id){
+      var w=document.getElementById(id).parentNode;
+      w.style.display=((v!=='EXW'&&v!=='FOB')||(id==='origin'&&v!=='EXW'))?'none':'';
+    });
+    [].forEach.call(itemsEl.children,function(d){
+      ['duty','other'].forEach(function(k){d.querySelector('[data-k="'+k+'"]').parentNode.style.display=v==='DDP'?'none':''});
+      d.querySelector('[data-k="vatx"]').parentNode.parentNode.style.display=v==='DDP'?'none':'';
+    });
+    document.getElementById('incoHint').innerHTML=th(hints[v][0],hints[v][1]);
+  }
+  [].forEach.call(document.querySelectorAll('#inco button'),function(b){b.addEventListener('click',function(){setInco(b.getAttribute('data-inco'))})});
+  var itemsEl=document.getElementById('items');
+  function th(x,y){return '<span class="t-th">'+x+'</span><span class="t-en">'+y+'</span>'}
+  function field(cls,k,thT,enT,ph,type){
+    return '<div><label>'+th(thT,enT)+'</label><input data-k="'+k+'" type="number" inputmode="decimal" min="0" step="any" placeholder="'+(ph||'0')+'"></div>';
+  }
+  function addItem(){
+    if(itemsEl.children.length>=MAX)return;
+    count++;
+    var d=document.createElement('div');d.className='lc-item';
+    d.innerHTML='<div class="lc-item-head"><span class="lc-no"></span><button type="button" class="lc-rm">'+th('ลบ','Remove')+'</button></div>'+
+     '<div class="lc-grid g3">'+
+     '<div class="full" style="grid-column:1/-1"><label>'+th('ชื่อสินค้า','Product name')+'</label><input data-k="name" type="text" placeholder="เช่น เสื้อ / Shirts"></div>'+
+     field('', 'val','มูลค่าสินค้ารายการนี้ (สกุลเงินตามใบแจ้งหนี้)','Item value (invoice currency)')+
+     field('', 'qty','จำนวนชิ้น','Units','เช่น 500')+
+     field('', 'duty','อัตราอากรขาเข้า (%)','Import duty rate (%)','เช่น 10')+
+     field('', 'other','ภาษีอื่น (บาท) เช่น สรรพสามิต','Other taxes (THB), e.g. excise')+
+     field('', 'wt','น้ำหนักรวม (กก.) ไม่บังคับ','Weight (kg), optional')+
+     field('', 'cbm','ปริมาตรรวม (CBM) ไม่บังคับ','Volume (CBM), optional')+
+     '<div class="full" style="grid-column:1/-1"><label style="display:flex;gap:10px;align-items:center;cursor:pointer"><input data-k="vatx" type="checkbox" style="width:auto"> '+th('สินค้ารายการนี้ได้รับยกเว้น VAT (คิด VAT เป็น 0)','This item is VAT-exempt (VAT = 0)')+'</label></div>'+
+     '</div>';
+    d.querySelector('.lc-rm').addEventListener('click',function(){
+      if(itemsEl.children.length>1){itemsEl.removeChild(d);renumber()}
+      else{[].forEach.call(d.querySelectorAll('input'),function(i){i.value='';i.checked=false})}
+    });
+    itemsEl.appendChild(d);renumber();
+  }
+  function renumber(){
+    [].forEach.call(itemsEl.children,function(d,i){d.querySelector('.lc-no').innerHTML=th('รายการที่ '+(i+1),'Item '+(i+1))});
+  }
+  function g(id){var v=parseFloat(document.getElementById(id).value);return isFinite(v)&&v>0?v:0}
+  function iv(d,k){var v=parseFloat(d.querySelector('[data-k="'+k+'"]').value);return isFinite(v)&&v>0?v:0}
+  function baht(x){return Math.round(x).toLocaleString('en-US')}
+  function baht2(x){return x.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function set(id,t){document.getElementById(id).textContent=t}
+  var lang=function(){return document.documentElement.getAttribute('lang')==='en'?'en':'th'};
+
+  addItem();setInco('FOB');
+
+  document.getElementById('calc').addEventListener('click',function(){
+    var rate=g('rate')||1, vatR0=g('vat'), vatR=vatR0;
+    var rows=[].map.call(itemsEl.children,function(d,i){
+      return {name:(d.querySelector('[data-k="name"]').value||'').trim()||('Item '+(i+1)),val:iv(d,'val')*rate,qty:iv(d,'qty'),duty:inco==='DDP'?0:iv(d,'duty'),other:inco==='DDP'?0:iv(d,'other'),wt:iv(d,'wt'),cbm:iv(d,'cbm'),vatx:inco==='DDP'||d.querySelector('[data-k="vatx"]').checked};
+    });
+    var warns=[];
+    function basisOf(r,b){return b==='value'?r.val:b==='weight'?r.wt:b==='cbm'?r.cbm:r.qty}
+    function shares(b,label){
+      var tot=rows.reduce(function(s,r){return s+basisOf(r,b)},0);
+      var missing=rows.some(function(r){return basisOf(r,b)<=0});
+      if(b!=='value'&&(tot<=0||missing)){
+        warns.push(lang()==='en'?('"'+label+'": the chosen basis is missing for some items, so it was split by value instead.'):('"'+label+'": ข้อมูลตามวิธีที่เลือกยังไม่ครบทุกรายการ จึงแบ่งตามมูลค่าสินค้าแทน'));
+        b='value';tot=rows.reduce(function(s,r){return s+r.val},0);
+      }
+      return rows.map(function(r){return tot>0?basisOf(r,b)/tot:1/rows.length});
+    }
+    var fS=shares(document.getElementById('basisF').value,lang()==='en'?'International freight':'ค่าขนส่งระหว่างประเทศ');
+    var lS=shares(document.getElementById('basisL').value,lang()==='en'?'Local costs':'ค่าใช้จ่ายในประเทศ');
+    var iS=shares('value','');
+    var freight=g('freight')+g('origin'),ins=g('insurance');if(inco!=='EXW'&&inco!=='FOB'){freight=0;ins=0}else if(inco==='FOB'){freight=g('freight')}
+    var L=g('port')+g('broker')+g('truck')+g('wh');
+    var m=g('margin'),useM=m>0&&m<100;
+    var T={cif:0,duty:0,vat:0,loc:0,tot:0};
+    var html='',zeroVal=false;
+    rows.forEach(function(r,i){
+      if(r.val<=0)zeroVal=true;
+      r.cif=r.val+freight*fS[i]+ins*iS[i];
+      r.dutyAmt=r.cif*r.duty/100;
+      r.vatAmt=r.vatx?0:(r.cif+r.dutyAmt+r.other)*vatR/100;
+      r.shared=L*lS[i];
+      r.total=r.cif+r.dutyAmt+r.vatAmt+r.other+r.shared;
+      r.totalx=r.total-r.vatAmt;
+      T.cif+=r.cif;T.duty+=r.dutyAmt;T.vat+=r.vatAmt;T.loc+=r.shared+r.other;T.tot+=r.total;
+    });
+    var en=lang()==='en';
+    var heads=en?['Item','CIF','Duty','VAT','Local + other','Total cost','Per unit (incl. VAT)','Per unit (excl. VAT)']:['รายการ','CIF','อากร','VAT','ค่าใช้จ่ายในประเทศ + ภาษีอื่น','ต้นทุนรวม','ต่อชิ้น (รวม VAT)','ต่อชิ้น (ไม่รวม VAT)'];
+    if(useM)heads.push(en?'Min. price excl. VAT':'ราคาขายขั้นต่ำก่อน VAT');
+    document.getElementById('thead').innerHTML=heads.map(function(h){return '<th>'+h+'</th>'}).join('');
+    var allQty=rows.every(function(r){return r.qty>0});
+    function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+    rows.forEach(function(r){
+      var pu=r.qty?baht2(r.total/r.qty):'—', pux=r.qty?baht2(r.totalx/r.qty):'—';
+      html+='<tr><td>'+esc(r.name)+'</td><td>'+baht(r.cif)+'</td><td>'+baht(r.dutyAmt)+'</td><td>'+baht(r.vatAmt)+'</td><td>'+baht(r.shared+r.other)+'</td><td>'+baht(r.total)+'</td><td>'+pu+'</td><td>'+pux+'</td>'+(useM?'<td>'+(r.qty?baht2((r.totalx/r.qty)/(1-m/100)):'—')+'</td>':'')+'</tr>';
+    });
+    document.getElementById('tbody').innerHTML=html;
+    document.getElementById('tfoot').innerHTML='<tr><td>'+(en?'Total':'รวม')+'</td><td>'+baht(T.cif)+'</td><td>'+baht(T.duty)+'</td><td>'+baht(T.vat)+'</td><td>'+baht(T.loc)+'</td><td>'+baht(T.tot)+'</td><td></td><td></td>'+(useM?'<td></td>':'')+'</tr>';
+    set('r-cif',baht(T.cif)+' ฿');set('r-duty',baht(T.duty)+' ฿');set('r-vat',baht(T.vat)+' ฿');set('r-local',baht(T.loc)+' ฿');set('r-total',baht(T.tot)+' ฿');
+    if(zeroVal)warns.push(en?'Some items have no value entered, so they carry no cost.':'บางรายการยังไม่ได้กรอกมูลค่า จึงไม่มีต้นทุนถูกคิดให้รายการนั้น');
+    if(!allQty)warns.push(en?'Enter the number of units for every item to see cost per unit.':'กรอกจำนวนชิ้นให้ครบทุกรายการเพื่อดูต้นทุนต่อชิ้น');
+    document.getElementById('warns').innerHTML=warns.map(function(w){return '<div class="lc-warn">'+esc(w)+'</div>'}).join('');
+    var out=document.getElementById('out');out.style.display='';out.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  document.getElementById('reset').addEventListener('click',function(){
+    itemsEl.innerHTML='';addItem();
+    ['origin','freight','insurance','port','broker','truck','wh','margin'].forEach(function(i){document.getElementById(i).value=''});
+    document.getElementById('rate').value='1';document.getElementById('vat').value='7';
+    document.getElementById('basisF').value='value';document.getElementById('basisL').value='value';
+    document.getElementById('out').style.display='none';setInco('FOB');
+  });
+})();
+</script>
+</body>
+</html>
