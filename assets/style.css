@@ -286,8 +286,8 @@ footer{background:var(--hull);padding:3.2rem 0 2.6rem;border-top:1px solid var(-
 .faq p{margin:0 0 1.3rem;font-size:var(--fs-sm);font-weight:200;opacity:.75;max-width:80ch;padding-right:2.4rem}
 
 /* free tool promo */
-.navtool{position:relative}
-.navtool .nbadge{display:inline-block;margin-left:.4rem;padding:.08rem .45rem;border-radius:99px;background:var(--gold);color:#0B2545;font-size:.68em;font-weight:600;letter-spacing:.03em;vertical-align:.1em}
+.nav-links a.navlink.navtool{position:relative;opacity:1;color:var(--gold-hi)}
+.nav-links a.navlink.navtool .nbadge{opacity:1;display:inline-block;margin-left:.4rem;padding:.08rem .45rem;border-radius:99px;background:var(--gold);color:#0B2545;font-size:.68em;font-weight:600;letter-spacing:.03em;vertical-align:.1em}
 .tool-band{border:1px solid var(--gold);border-radius:16px;padding:1.6rem 1.7rem;background:linear-gradient(135deg,rgba(200,160,69,.16),rgba(18,121,141,.16));display:flex;gap:1.6rem;align-items:center;flex-wrap:wrap}
 .tool-band .tb-txt{flex:1 1 320px}
 .tool-band .tb-tag{display:inline-block;margin-bottom:.5rem;padding:.12rem .6rem;border-radius:99px;background:var(--gold);color:#0B2545;font-size:var(--fs-xs);font-weight:600;letter-spacing:.04em}
