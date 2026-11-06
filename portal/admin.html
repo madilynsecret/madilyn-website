@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>แอดมิน — Madilyn's Secret</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="/">MADILYN'S SECRET<small>หน้าแอดมิน · ระบบสมาชิก</small></a>
+  <div class="actions"><span id="who" style="color:#cfd8e6;font-size:13px"></span>
+    <button id="logoutBtn" class="btn ghost small" hidden>ออกจากระบบ</button></div>
+</div></header>
+
+<main class="wrap">
+  <section id="loginView" class="card narrow">
+    <h2>เข้าสู่ระบบแอดมิน</h2>
+    <p class="muted">ใช้บัญชี Google ของบริษัท (madilynsecret@gmail.com) เท่านั้น</p>
+    <button id="googleBtn" class="btn block" type="button">เข้าสู่ระบบด้วย Google</button>
+    <div id="loginMsg"></div>
+  </section>
+
+  <section id="setupView" class="card" hidden>
+    <h2>บัญชีนี้ไม่มีสิทธิ์แอดมิน</h2>
+    <p>บัญชีที่เข้าอยู่: <code id="uidBox"></code></p>
+    <p class="muted">หน้าแอดมินใช้ได้เฉพาะบัญชี Google madilynsecret@gmail.com — กดออกจากระบบแล้วเข้าใหม่ด้วยบัญชีนั้น</p>
+  </section>
+
+  <section id="app" hidden>
+    <nav class="tabs" id="tabs">
+      <button data-tab="members" class="on">สมาชิก / ระดับ</button>
+      <button data-tab="add">เพิ่มรายการขนส่ง</button>
+      <button data-tab="status">อัปเดตสถานะ</button>
+      <button data-tab="apps">ใบสมัครใหม่ <span id="appCount"></span></button>
+      <button data-tab="import">นำเข้าข้อมูล</button>
+    </nav>
+
+    <!-- members -->
+    <div class="card" data-panel="members">
+      <div class="row"><h2 style="margin:0">สมาชิกและระดับ</h2><div class="spacer"></div>
+        <input id="mFilter" class="search" placeholder="ค้นหารหัส / ชื่อ"></div>
+      <p class="muted">ยอด 12 เดือน = ค่าขนส่ง + ค่าบริการ ของรายการที่รับเข้าภายใน 365 วัน · เกณฑ์: Gold ≥ <span id="gMin"></span> · Platinum ≥ <span id="pMin"></span> บาท</p>
+      <div class="tablewrap"><table><thead><tr><th>รหัส</th><th>ชื่อ</th><th>เส้นทาง</th><th>ระดับ</th><th>ยอด 12 เดือน</th><th>ยอดสะสม</th><th>ล่าสุด</th><th>ตั้งระดับเอง</th></tr></thead>
+        <tbody id="mBody"></tbody></table></div>
+      <h3>ทบทวนระดับประจำปี (ทำทุกเดือนมกราคม)</h3>
+      <p class="muted">ลดลง 1 ระดับ ถ้ายอด 12 เดือนต่ำกว่าเกณฑ์คงระดับ (Gold <span id="gKeep"></span> · Platinum <span id="pKeep"></span> บาท) · ครั้งแรกเริ่มได้ <span id="firstRev"></span></p>
+      <div class="row"><button id="reviewPreview" class="btn light">ดูรายชื่อที่จะถูกปรับ</button>
+        <button id="reviewApply" class="btn" hidden>ยืนยันปรับระดับ</button></div>
+      <div id="reviewOut"></div>
+    </div>
+
+    <!-- add shipment -->
+    <div class="card" data-panel="add" hidden>
+      <h2>เพิ่มรายการขนส่ง</h2>
+      <form id="addForm">
+        <div class="grid">
+          <div><label class="req" for="aCode">รหัสสมาชิก</label><input id="aCode" list="codeList" required autocomplete="off"><datalist id="codeList"></datalist></div>
+          <div><label>ลูกค้า</label><div id="aWho" class="muted" style="padding-top:8px">—</div></div>
+          <div id="dirWrap" hidden><label for="aDir">ทิศทาง</label><select id="aDir"><option>ไทย → มาเลเซีย</option><option>มาเลเซีย → ไทย</option></select></div>
+          <div><label class="req" for="aCat">ประเภทสินค้า</label><select id="aCat" required></select></div>
+          <div><label for="aTrk">เลข Tracking</label><input id="aTrk"></div>
+          <div><label class="req" for="aDate">วันที่รับเข้าโกดัง</label><input id="aDate" type="date" required></div>
+          <div><label class="req" for="aKg">น้ำหนัก (kg)</label><input id="aKg" type="number" step="0.01" min="0" required></div>
+          <div><label class="req" for="aCbm">ปริมาตร (CBM)</label><input id="aCbm" type="number" step="0.0001" min="0" required></div>
+          <div><label for="aRk">เรต / kg</label><input id="aRk" type="number" step="0.01" min="0"></div>
+          <div><label for="aRc">เรต / CBM</label><input id="aRc" type="number" step="1" min="0"></div>
+          <div><label for="aStatus">สถานะ</label><select id="aStatus"></select></div>
+        </div>
+        <div id="aCalc" class="msg info"></div>
+        <button class="btn block" type="submit">บันทึกรายการ</button>
+      </form>
+      <div id="addMsg"></div>
+    </div>
+
+    <!-- status -->
+    <div class="card" data-panel="status" hidden>
+      <h2>อัปเดตสถานะพัสดุ</h2>
+      <input id="sFind" placeholder="ค้นหาเลข Tracking / SHP / รหัสสมาชิก" style="max-width:420px">
+      <div id="sList"></div>
+    </div>
+
+    <!-- applications -->
+    <div class="card" data-panel="apps" hidden>
+      <h2>ใบสมัครสมาชิกใหม่</h2>
+      <div id="appList"><p class="muted">กำลังโหลด…</p></div>
+    </div>
+
+    <!-- import -->
+    <div class="card" data-panel="import" hidden>
+      <h2>นำเข้าข้อมูลสมาชิกและรายการขนส่ง (ครั้งแรก)</h2>
+      <p class="muted">เลือกไฟล์ <b>portal-import.json</b> ระบบจะสร้างบัญชีลูกค้าทุกคน (ชื่อผู้ใช้ = รหัสสมาชิก รหัสผ่าน = รหัสตั้งต้นในไฟล์) บันทึกข้อมูลสมาชิก และรายการขนส่ง · กดซ้ำได้ ระบบข้ามรายการที่มีอยู่แล้ว</p>
+      <input id="impFile" type="file" accept=".json,application/json">
+      <button id="impBtn" class="btn block" disabled>เริ่มนำเข้า</button>
+      <div id="impLog" class="log" hidden></div>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, initializeAuth, inMemoryPersistence, createUserWithEmailAndPassword }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, getDocs, doc, setDoc, updateDoc, writeBatch, query, where, limit, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { firebaseConfig, auth, db, codeToEmail, isMemberEmail, TIERS, tierRank, tierFromSpend, spend12, RATES, calcCharge,
+         STATUSES, ROUTE_NAME, fmt, fmtDate, esc, $, show, authErrorTH } from "./common.js";
+
+// secondary app: creates customer accounts without signing the admin out
+const creatorApp = initializeApp(firebaseConfig, "creator");
+const creatorAuth = initializeAuth(creatorApp, { persistence: inMemoryPersistence });
+async function createMemberAuth(code, password) {
+  const cred = await createUserWithEmailAndPassword(creatorAuth, codeToEmail(code), password);
+  const uid = cred.user.uid;
+  await signOut(creatorAuth);
+  return uid;
+}
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const today = () => new Date().toISOString().slice(0, 10);
+const say = (id, t, k = "err") => { $(id).innerHTML = t ? `<div class="msg ${k}">${t}</div>` : ""; };
+function genPw() { const a = new Uint32Array(4); crypto.getRandomValues(a); return "MS" + Array.from(a, (x) => "23456789"[x % 8]).join(""); }
+
+let members = {}, shipments = [];
+const nameOf = (m) => (m ? m.company || `${m.firstName || ""} ${m.lastName || ""}`.trim() : "");
+const shipsOf = (code) => shipments.filter((s) => s.memberCode === code);
+
+// ---------------------------------------------------------------- auth
+$("#googleBtn").addEventListener("click", async () => {
+  say("#loginMsg", "");
+  const p = new GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account", login_hint: "madilynsecret@gmail.com" });
+  try { await signInWithPopup(auth, p); }
+  catch (err) { if (!(err.code || "").includes("popup-closed")) say("#loginMsg", esc(authErrorTH(err))); }
+});
+$("#logoutBtn").addEventListener("click", () => signOut(auth));
+
+onAuthStateChanged(auth, async (user) => {
+  show("#logoutBtn", !!user); $("#who").textContent = user ? user.email : "";
+  show("#app", false); show("#setupView", false);
+  if (!user) { show("#loginView", true); return; }
+  show("#loginView", false);
+  if (isMemberEmail(user.email)) { await signOut(auth); show("#loginView", true); say("#loginMsg", "บัญชีสมาชิกเข้าหน้าแอดมินไม่ได้"); return; }
+  try { await loadAll(); show("#app", true); renderMembers(); fillAddForm(); loadApps(); }
+  catch (err) {
+    if ((err.code || "").includes("permission-denied")) { $("#uidBox").textContent = user.email || user.uid; show("#setupView", true); }
+    else { show("#loginView", true); say("#loginMsg", esc(authErrorTH(err))); }
+  }
+});
+
+async function loadAll() {
+  const ms = await getDocs(collection(db, "members"));
+  members = {}; ms.forEach((d) => { members[d.id] = d.data(); });
+  const ss = await getDocs(collection(db, "shipments"));
+  shipments = ss.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+// ---------------------------------------------------------------- tabs
+$("#tabs").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-tab]"); if (!b) return;
+  document.querySelectorAll("#tabs button").forEach((x) => x.classList.toggle("on", x === b));
+  document.querySelectorAll("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== b.dataset.tab; });
+});
+
+// ---------------------------------------------------------------- members & tiers
+$("#gMin").textContent = fmt(TIERS.min.Gold); $("#pMin").textContent = fmt(TIERS.min.Platinum);
+$("#gKeep").textContent = fmt(TIERS.keep.Gold); $("#pKeep").textContent = fmt(TIERS.keep.Platinum);
+$("#firstRev").textContent = fmtDate(TIERS.firstReview);
+$("#mFilter").addEventListener("input", renderMembers);
+function renderMembers() {
+  const f = $("#mFilter").value.trim().toLowerCase();
+  const rows = Object.entries(members).sort(([a], [b]) => a.localeCompare(b))
+    .filter(([c, m]) => !f || c.toLowerCase().includes(f) || nameOf(m).toLowerCase().includes(f));
+  $("#mBody").innerHTML = rows.map(([c, m]) => {
+    const ss = shipsOf(c), s12 = spend12(ss), all = ss.reduce((a, s) => a + (Number(s.total) || 0), 0);
+    const last = ss.map((s) => s.receivedDate || "").sort().pop();
+    return `<tr><td><b>${esc(c)}</b>${m.internal ? ' <span class="muted">(ภายใน)</span>' : ""}</td><td>${esc(nameOf(m))}</td>
+      <td>${esc(m.route)}</td><td><span class="tier ${esc(m.tier)}">${esc(m.tier)}</span></td>
+      <td>${fmt(s12, 2)}</td><td>${fmt(all, 2)}</td><td>${fmtDate(last)}</td>
+      <td><select data-tier="${esc(c)}">${TIERS.order.map((t) => `<option ${t === m.tier ? "selected" : ""}>${t}</option>`).join("")}</select></td></tr>`;
+  }).join("") || `<tr><td colspan="8" class="muted">ยังไม่มีสมาชิก — ไปที่แท็บ "นำเข้าข้อมูล"</td></tr>`;
+}
+$("#mBody").addEventListener("change", async (e) => {
+  const sel = e.target.closest("select[data-tier]"); if (!sel) return;
+  const c = sel.dataset.tier, t = sel.value;
+  try { await updateDoc(doc(db, "members", c), { tier: t, tierSince: today(), tierManual: true, updatedAt: serverTimestamp() });
+        members[c].tier = t; renderMembers(); }
+  catch (err) { alertBox(authErrorTH(err)); }
+});
+function alertBox(t) { $("#reviewOut").innerHTML = `<div class="msg err">${esc(t)}</div>`; }
+
+let reviewPlan = [];
+$("#reviewPreview").addEventListener("click", () => {
+  const early = today() < TIERS.firstReview;
+  reviewPlan = [];
+  for (const [c, m] of Object.entries(members)) {
+    if (m.internal || m.tier === "Silver") continue;
+    const s12 = spend12(shipsOf(c));
+    if (s12 < TIERS.keep[m.tier]) reviewPlan.push({ c, from: m.tier, to: TIERS.order[tierRank(m.tier) - 1], s12 });
+  }
+  let h = early ? `<div class="msg warn">ยังไม่ถึงรอบทบทวนแรก (${fmtDate(TIERS.firstReview)}) — ลูกค้าเดิมได้รับการคงระดับไว้ถึงวันนั้น</div>` : "";
+  h += reviewPlan.length ? `<div class="tablewrap"><table><tr><th>รหัส</th><th>ยอด 12 เดือน</th><th>ปรับจาก</th><th>เป็น</th></tr>${reviewPlan.map((p) =>
+    `<tr><td>${esc(p.c)}</td><td>${fmt(p.s12, 2)}</td><td>${p.from}</td><td>${p.to}</td></tr>`).join("")}</table></div>` : `<p class="muted">ไม่มีสมาชิกที่ต้องปรับลดระดับ</p>`;
+  $("#reviewOut").innerHTML = h;
+  show("#reviewApply", reviewPlan.length > 0 && !early);
+});
+$("#reviewApply").addEventListener("click", async () => {
+  const b = $("#reviewApply"); b.disabled = true;
+  try {
+    for (const p of reviewPlan) {
+      await updateDoc(doc(db, "members", p.c), { tier: p.to, tierSince: today(), updatedAt: serverTimestamp() });
+      members[p.c].tier = p.to;
+    }
+    $("#reviewOut").innerHTML = `<div class="msg ok">ปรับระดับแล้ว ${reviewPlan.length} ราย</div>`;
+    reviewPlan = []; show("#reviewApply", false); renderMembers();
+  } catch (err) { alertBox(authErrorTH(err)); } finally { b.disabled = false; }
+});
+
+// auto-upgrade after new spend (never downgrades)
+async function autoUpgrade(code) {
+  const m = members[code]; if (!m) return "";
+  const s12 = spend12(shipsOf(code)), t = tierFromSpend(s12);
+  if (tierRank(t) > tierRank(m.tier)) {
+    await updateDoc(doc(db, "members", code), { tier: t, tierSince: today(), updatedAt: serverTimestamp() });
+    const old = m.tier; m.tier = t;
+    return ` · <b>เลื่อนระดับ ${old} → ${t}</b> (ยอด 12 เดือน ${fmt(s12, 2)} บาท) แจ้งลูกค้าทาง LINE ได้เลย`;
+  }
+  return "";
+}
+
+// ---------------------------------------------------------------- add shipment
+$("#aStatus").innerHTML = STATUSES.map((s) => `<option>${s}</option>`).join("");
+function fillAddForm() {
+  $("#codeList").innerHTML = Object.keys(members).sort().map((c) => `<option value="${esc(c)}">${esc(nameOf(members[c]))}</option>`).join("");
+  $("#aDate").value = today();
+}
+function curRoute() { const m = members[$("#aCode").value.trim().toUpperCase()]; return m ? m.route : null; }
+function onCodeChange() {
+  const c = $("#aCode").value.trim().toUpperCase(), m = members[c];
+  $("#aWho").innerHTML = m ? `${esc(nameOf(m))} · ${esc(ROUTE_NAME[m.route])} · <span class="tier ${m.tier}">${m.tier}</span>` : "—";
+  const r = m ? m.route : "TWM";
+  show("#dirWrap", r === "MSL");
+  $("#aCat").innerHTML = Object.keys(RATES[r]).map((k) => `<option>${k}</option>`).join("");
+  fillRates();
+}
+function fillRates() {
+  const c = $("#aCode").value.trim().toUpperCase(), m = members[c]; if (!m) { calcPreview(); return; }
+  const r = RATES[m.route][$("#aCat").value]; if (!r) return;
+  const [rk, rc] = r[m.tier] || r.Silver; $("#aRk").value = rk; $("#aRc").value = rc; calcPreview();
+}
+function calcPreview() {
+  const r = curRoute(); if (!r) { $("#aCalc").textContent = "เลือกรหัสสมาชิกก่อน"; return; }
+  const x = calcCharge(r, $("#aKg").value, $("#aCbm").value, Number($("#aRk").value), Number($("#aRc").value));
+  $("#aCalc").innerHTML = r === "MSL"
+    ? `CBM ที่คิดเงิน ${fmt(x.chargeableCbm, 4)} (ขั้นต่ำ ${RATES.MSL_MIN_CBM} · หรือ kg ÷ ${RATES.MSL_KG_PER_CBM}) → ค่าขนส่ง <b>${fmt(x.total, 2)} บาท</b>`
+    : `ค่าขนส่ง ${fmt(x.freight, 2)} + ค่าบริการ ${fmt(x.fee, 2)} = <b>${fmt(x.total, 2)} บาท</b>`;
+}
+$("#aCode").addEventListener("input", onCodeChange);
+$("#aCat").addEventListener("change", fillRates);
+["aKg", "aCbm", "aRk", "aRc"].forEach((id) => $("#" + id).addEventListener("input", calcPreview));
+onCodeChange();
+
+function nextShipId() {
+  const n = shipments.map((s) => parseInt(String(s.id).replace(/^SHP-/, ""), 10)).filter((x) => !isNaN(x));
+  return "SHP-" + String((n.length ? Math.max(...n) : 0) + 1).padStart(4, "0");
+}
+$("#addForm").addEventListener("submit", async (e) => {
+  e.preventDefault(); say("#addMsg", "");
+  const code = $("#aCode").value.trim().toUpperCase(), m = members[code];
+  if (!m || !m.authUid) return say("#addMsg", "ไม่พบรหัสสมาชิกนี้ในระบบ");
+  const route = m.route, cat = $("#aCat").value, rk = Number($("#aRk").value), rc = Number($("#aRc").value);
+  const kg = Number($("#aKg").value), cbm = Number($("#aCbm").value);
+  const x = calcCharge(route, kg, cbm, rk, rc);
+  const id = nextShipId();
+  const s = { memberCode: code, memberUid: m.authUid, route, tracking: $("#aTrk").value.trim(), receivedDate: $("#aDate").value,
+    category: cat, mode: route === "MSL" ? "รถ" : (cat.includes("Sea") ? "เรือ" : "รถ"), status: $("#aStatus").value,
+    kg, cbm, rateKg: rk, rateCbm: rc, freight: x.freight, fee: x.fee, total: x.total, createdAt: serverTimestamp() };
+  if (route === "MSL") { s.direction = $("#aDir").value; s.chargeableCbm = x.chargeableCbm; }
+  const btn = e.submitter; btn.disabled = true;
+  try {
+    await setDoc(doc(db, "shipments", id), s);
+    shipments.push({ id, ...s });
+    const up = await autoUpgrade(code);
+    say("#addMsg", `บันทึก ${esc(id)} แล้ว · ยอด ${fmt(x.total, 2)} บาท${up}`, "ok");
+    $("#aTrk").value = ""; $("#aKg").value = ""; $("#aCbm").value = ""; calcPreview(); renderMembers();
+  } catch (err) { say("#addMsg", esc(authErrorTH(err))); } finally { btn.disabled = false; }
+});
+
+// ---------------------------------------------------------------- status update
+$("#sFind").addEventListener("input", renderStatus);
+function renderStatus() {
+  const t = $("#sFind").value.trim().toLowerCase();
+  if (t.length < 2) { $("#sList").innerHTML = `<p class="muted">พิมพ์อย่างน้อย 2 ตัวอักษร</p>`; return; }
+  const list = shipments.filter((s) => [s.id, s.tracking, s.memberCode].some((v) => String(v || "").toLowerCase().includes(t))).slice(0, 30);
+  $("#sList").innerHTML = list.map((s) => `<div class="ship"><div class="head"><div><div class="muted">${esc(s.id)} · ${esc(s.memberCode)} · ${fmtDate(s.receivedDate)}</div>
+      <div class="trk">${esc(s.tracking || "ไม่มีเลข Tracking")}</div></div>
+      <div class="row"><select data-sid="${esc(s.id)}">${STATUSES.map((x) => `<option ${x === s.status ? "selected" : ""}>${x}</option>`).join("")}</select>
+      <input type="date" data-arr="${esc(s.id)}" value="${esc(s.arrivedTHDate || s.arrivedDate || "")}" title="วันที่ถึงปลายทาง" style="width:auto">
+      <button class="btn small" data-save="${esc(s.id)}">บันทึก</button></div></div><div data-out="${esc(s.id)}"></div></div>`).join("")
+    || `<p class="muted">ไม่พบรายการ</p>`;
+}
+$("#sList").addEventListener("click", async (e) => {
+  const b = e.target.closest("button[data-save]"); if (!b) return;
+  const id = b.dataset.save, st = $(`select[data-sid="${id}"]`).value, arr = $(`input[data-arr="${id}"]`).value;
+  b.disabled = true;
+  try {
+    const upd = { status: st, updatedAt: serverTimestamp() }; if (arr) upd.arrivedTHDate = arr;
+    await updateDoc(doc(db, "shipments", id), upd);
+    Object.assign(shipments.find((s) => s.id === id), upd);
+    $(`[data-out="${id}"]`).innerHTML = `<div class="msg ok">บันทึกแล้ว</div>`;
+  } catch (err) { $(`[data-out="${id}"]`).innerHTML = `<div class="msg err">${esc(authErrorTH(err))}</div>`; } finally { b.disabled = false; }
+});
+
+// ---------------------------------------------------------------- applications
+let apps = [];
+async function loadApps() {
+  const snap = await getDocs(query(collection(db, "applications"), where("status", "==", "pending"), limit(100)));
+  apps = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  $("#appCount").textContent = apps.length ? `(${apps.length})` : "";
+  renderApps();
+}
+function nextCode(route) {
+  const n = Object.keys(members).filter((c) => c.startsWith(route)).map((c) => parseInt(c.slice(3), 10)).filter((x) => !isNaN(x));
+  const v = (n.length ? Math.max(...n) : 0) + 1;
+  return route + String(v).padStart(route === "TWM" ? 3 : 2, "0");
+}
+function renderApps() {
+  $("#appList").innerHTML = apps.map((a) => {
+    const t = a.addrTH || {}, y = a.addrMY || {};
+    return `<div class="ship"><div class="head"><div><b>${esc(a.firstName)} ${esc(a.lastName)}</b>${a.company ? " · " + esc(a.company) : ""}
+      <div class="muted">${esc(ROUTE_NAME[a.route] || a.route)} · LINE ${esc(a.lineId)} · โทร ${esc(a.phone)}</div></div>
+      <div class="row"><button class="btn small teal" data-ok="${a.id}">อนุมัติ</button><button class="btn small light" data-no="${a.id}">ปฏิเสธ</button></div></div>
+      <div class="meta" style="margin-top:8px"><div>${esc(a.idType)}<br><b>${esc(a.idNumber)}</b></div>
+      <div>ที่อยู่ไทย<br><b>${esc([t.line, t.sub, t.dist, t.prov, t.zip].filter(Boolean).join(" "))}</b></div>
+      ${a.route === "MSL" ? `<div>ที่อยู่มาเลเซีย<br><b>${esc([y.line, y.city, y.state, y.poskod].filter(Boolean).join(" "))}</b></div>` : ""}</div>
+      <div data-aout="${a.id}"></div></div>`;
+  }).join("") || `<p class="muted">ไม่มีใบสมัครใหม่</p>`;
+}
+$("#appList").addEventListener("click", async (e) => {
+  const ok = e.target.closest("button[data-ok]"), no = e.target.closest("button[data-no]");
+  if (!ok && !no) return;
+  const id = (ok || no).dataset.ok || (ok || no).dataset.no, a = apps.find((x) => x.id === id), out = $(`[data-aout="${id}"]`);
+  (ok || no).disabled = true;
+  try {
+    if (no) { await updateDoc(doc(db, "applications", id), { status: "rejected", decidedAt: serverTimestamp() }); out.innerHTML = `<div class="msg info">ปฏิเสธแล้ว</div>`; return; }
+    const code = nextCode(a.route), pw = genPw();
+    const uid = await createMemberAuth(code, pw);
+    const m = { code, route: a.route, routeName: ROUTE_NAME[a.route], tier: "Silver", tierSince: today(), company: a.company || "",
+      firstName: a.firstName, lastName: a.lastName, lineId: a.lineId, phone: a.phone, email: a.email || "", idType: a.idType, idNumber: a.idNumber,
+      addrTH: a.addrTH || {}, authUid: uid, mustChangePassword: true, applicationId: id, createdAt: serverTimestamp() };
+    if (a.route === "MSL") m.addrMY = a.addrMY || {};
+    await setDoc(doc(db, "members", code), m);
+    await updateDoc(doc(db, "applications", id), { status: "approved", memberCode: code, decidedAt: serverTimestamp() });
+    members[code] = m; fillAddForm(); renderMembers();
+    const text = `ยินดีต้อนรับสู่ Madilyn's Secret ค่ะ\nรหัสสมาชิก: ${code}\nรหัสผ่านตั้งต้น: ${pw}\nเข้าสู่ระบบที่ https://madilynsecret.com/portal/ แล้วระบบจะให้ตั้งรหัสผ่านใหม่`;
+    out.innerHTML = `<div class="msg ok">อนุมัติแล้ว — ส่งข้อความนี้ให้ลูกค้าทาง LINE (รหัสผ่านจะไม่แสดงอีก):<textarea rows="4" readonly style="margin-top:6px">${esc(text)}</textarea></div>`;
+  } catch (err) { out.innerHTML = `<div class="msg err">${esc(authErrorTH(err))}</div>`; (ok || no).disabled = false; }
+});
+
+// ---------------------------------------------------------------- import
+let impData = null;
+$("#impFile").addEventListener("change", async (e) => {
+  impData = null; $("#impBtn").disabled = true;
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (!Array.isArray(d.members) || !Array.isArray(d.shipments)) throw new Error("โครงสร้างไฟล์ไม่ถูกต้อง");
+    impData = d; $("#impBtn").disabled = false;
+    log(`อ่านไฟล์แล้ว: สมาชิก ${d.members.length} ราย · รายการขนส่ง ${d.shipments.length} รายการ`, true);
+  } catch (err) { log("อ่านไฟล์ไม่ได้: " + err.message, true); }
+});
+function log(t, reset = false) { const el = $("#impLog"); show(el, true); el.textContent = (reset ? "" : el.textContent + "\n") + t; el.scrollTop = el.scrollHeight; }
+$("#impBtn").addEventListener("click", async () => {
+  const b = $("#impBtn"); b.disabled = true;
+  let created = 0, skipped = 0, failed = 0;
+  try {
+    await loadAll();
+    for (const src of impData.members) {
+      const code = src.code;
+      if (members[code] && members[code].authUid) { skipped++; continue; }
+      let uid;
+      try { uid = await createMemberAuth(code, src.initialPassword); }
+      catch (err) {
+        failed++;
+        log(`✗ ${code}: ${err.code === "auth/email-already-in-use" ? "มีบัญชีนี้อยู่แล้วแต่ไม่มีข้อมูลสมาชิก — ลบผู้ใช้ " + codeToEmail(code) + " ใน Firebase Console > Authentication แล้วกดนำเข้าใหม่" : authErrorTH(err)}`);
+        if ((err.code || "").includes("too-many-requests")) { log("หยุดชั่วคราว: Firebase จำกัดจำนวนการสร้างบัญชี รอ 1 ชั่วโมงแล้วกดนำเข้าอีกครั้ง"); break; }
+        continue;
+      }
+      const m = { ...src }; delete m.initialPassword;
+      Object.assign(m, { authUid: uid, mustChangePassword: true, tierSince: today(), createdAt: serverTimestamp() });
+      await setDoc(doc(db, "members", code), m);
+      members[code] = m; created++;
+      log(`✓ ${code} สร้างบัญชีแล้ว`);
+      await sleep(350);
+    }
+    log(`สมาชิก: สร้างใหม่ ${created} · มีอยู่แล้ว ${skipped} · ไม่สำเร็จ ${failed}`);
+    const existing = new Set(shipments.map((s) => s.id));
+    const todo = impData.shipments.filter((s) => !existing.has(s.id));
+    let wrote = 0, noUid = 0;
+    for (let i = 0; i < todo.length; i += 400) {
+      const batch = writeBatch(db);
+      for (const s of todo.slice(i, i + 400)) {
+        const m = members[s.memberCode];
+        if (!m || !m.authUid) { noUid++; continue; }
+        const { id, ...rest } = s;
+        batch.set(doc(db, "shipments", id), { ...rest, memberUid: m.authUid, importedAt: serverTimestamp() });
+        wrote++;
+      }
+      await batch.commit();
+    }
+    log(`รายการขนส่ง: บันทึก ${wrote} · มีอยู่แล้ว ${impData.shipments.length - todo.length} · ข้ามเพราะยังไม่มีบัญชีสมาชิก ${noUid}`);
+    if (impData.tiers) await setDoc(doc(db, "config", "tiers"), impData.tiers);
+    await loadAll(); renderMembers(); fillAddForm();
+    log(failed || noUid ? "เสร็จบางส่วน — แก้ตามข้อความด้านบนแล้วกดนำเข้าอีกครั้ง" : "นำเข้าครบแล้ว ✓ ลบไฟล์ portal-import.json ออกจากเครื่องได้เลย");
+  } catch (err) { log("หยุด: " + authErrorTH(err)); }
+  finally { b.disabled = false; }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>สมัครสมาชิก — Madilyn's Secret</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="/">MADILYN'S SECRET<small>สมัครสมาชิกบริการขนส่ง</small></a>
+  <div class="actions"><a class="btn ghost small" href="index.html">เข้าสู่ระบบ</a></div>
+</div></header>
+
+<main class="wrap">
+  <section class="card" id="formCard" style="max-width:760px;margin:0 auto">
+    <h2>สมัครสมาชิก</h2>
+    <p class="muted">กรอกข้อมูลให้ครบ แอดมินจะตรวจสอบและส่งรหัสสมาชิกกับรหัสผ่านให้ทาง LINE ภายในวันทำการ</p>
+    <form id="regForm">
+      <label class="req" for="route">เส้นทางที่ใช้บริการ</label>
+      <select id="route" required>
+        <option value="TWM">จีน → ไทย</option>
+        <option value="MSL">ไทย ↔ มาเลเซีย (ทางรถ)</option>
+      </select>
+      <div class="grid">
+        <div><label class="req" for="first">ชื่อ</label><input id="first" maxlength="80" required></div>
+        <div><label class="req" for="last">นามสกุล</label><input id="last" maxlength="80" required></div>
+        <div><label for="company">ชื่อบริษัท / ร้าน (ถ้ามี)</label><input id="company" maxlength="150"></div>
+        <div><label class="req" for="line">LINE ID</label><input id="line" maxlength="60" required></div>
+        <div><label class="req" for="phone">เบอร์โทร</label><input id="phone" inputmode="tel" maxlength="20" placeholder="0812345678" required></div>
+        <div><label for="email">อีเมล</label><input id="email" type="email" maxlength="120"></div>
+        <div><label class="req" for="idType">ประเภทเลขบัตร</label>
+          <select id="idType"><option>บัตรประชาชน</option><option>เลขผู้เสียภาษีนิติบุคคล</option><option>MyKad</option><option>Passport</option></select></div>
+        <div><label class="req" for="idNo">เลขบัตร / เลขผู้เสียภาษี</label><input id="idNo" maxlength="20" required></div>
+      </div>
+      <h3>ที่อยู่ในไทย <span class="muted" id="thHint">(ที่อยู่จัดส่ง)</span></h3>
+      <div class="grid">
+        <div style="grid-column:1/-1"><label class="req" for="tLine">บ้านเลขที่ / อาคาร / ซอย / ถนน</label><input id="tLine" maxlength="200" required></div>
+        <div><label for="tSub">ตำบล / แขวง</label><input id="tSub" maxlength="80"></div>
+        <div><label for="tDist">อำเภอ / เขต</label><input id="tDist" maxlength="80"></div>
+        <div><label class="req" for="tProv">จังหวัด</label><input id="tProv" maxlength="80" required></div>
+        <div><label class="req" for="tZip">รหัสไปรษณีย์</label><input id="tZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required></div>
+      </div>
+      <div id="myBlock" hidden>
+        <h3>ที่อยู่มาเลเซีย</h3>
+        <div class="grid">
+          <div style="grid-column:1/-1"><label class="req" for="mLine">Address</label><input id="mLine" maxlength="200"></div>
+          <div><label for="mCity">Bandar (เมือง)</label><input id="mCity" maxlength="80"></div>
+          <div><label class="req" for="mState">Negeri (รัฐ)</label><input id="mState" maxlength="80"></div>
+          <div><label class="req" for="mZip">Poskod</label><input id="mZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5"></div>
+        </div>
+      </div>
+      <label class="consent"><input type="checkbox" id="consent" required>
+        <span>ยินยอมให้ บริษัท เมดิลินส์ ซีเครท (ไทยแลนด์) จำกัด เก็บและใช้ข้อมูลนี้ เพื่อให้บริการขนส่ง ออกเอกสารพิธีการศุลกากร และติดต่อเรื่องพัสดุของฉันเท่านั้น</span></label>
+      <button class="btn gold block" type="submit">ส่งใบสมัคร</button>
+    </form>
+    <div id="regMsg"></div>
+  </section>
+
+  <section class="card narrow" id="doneCard" hidden style="text-align:center">
+    <h2>ส่งใบสมัครเรียบร้อย</h2>
+    <p>ขั้นตอนสุดท้าย: เพิ่มเพื่อน LINE ของบริษัท เพื่อรับรหัสสมาชิกและรหัสผ่าน</p>
+    <a class="btn line block" id="lineBtn" href="#" target="_blank" rel="noopener">เพิ่มเพื่อน LINE</a>
+    <p class="muted" style="margin-top:12px">กำลังพาไปหน้า LINE อัตโนมัติ…</p>
+  </section>
+</main>
+<footer>บริษัท เมดิลินส์ ซีเครท (ไทยแลนด์) จำกัด · 085-559-0903</footer>
+
+<script type="module">
+import { addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { db, LINE_OA, esc, $, show } from "./common.js";
+
+$("#lineBtn").href = LINE_OA;
+const syncRoute = () => {
+  const msl = $("#route").value === "MSL";
+  show("#myBlock", msl);
+  ["mLine", "mState", "mZip"].forEach((id) => { $("#" + id).required = msl; });
+  $("#thHint").textContent = msl ? "(ผู้ส่ง/ผู้รับฝั่งไทย)" : "(ที่อยู่จัดส่ง)";
+};
+$("#route").addEventListener("change", syncRoute); syncRoute();
+
+function normPhone(raw) {
+  let d = raw.replace(/\D/g, "");
+  if (d.startsWith("66") || d.startsWith("60") || d.startsWith("65")) return d.slice(0, 2) + d.slice(2).replace(/^0+/, "");
+  if (d.startsWith("0")) return "66" + d.slice(1);
+  return d;
+}
+
+$("#regForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const v = (id) => $("#" + id).value.trim();
+  const idType = v("idType"), idNumber = v("idNo").replace(/[\s-]/g, "");
+  const say = (t, k = "err") => { $("#regMsg").innerHTML = `<div class="msg ${k}">${esc(t)}</div>`; };
+  if (idType === "บัตรประชาชน" && !/^\d{13}$/.test(idNumber)) return say("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก");
+  const phone = normPhone(v("phone"));
+  if (!/^(66|60|65)\d{8,10}$/.test(phone)) return say("เบอร์โทรไม่ถูกต้อง");
+  const route = v("route");
+  const data = {
+    route, firstName: v("first"), lastName: v("last"), company: v("company"), lineId: v("line"), phone, email: v("email"),
+    idType, idNumber, addrTH: { line: v("tLine"), sub: v("tSub"), dist: v("tDist"), prov: v("tProv"), zip: v("tZip") },
+    consent: $("#consent").checked, status: "pending", createdAt: serverTimestamp()
+  };
+  if (route === "MSL") data.addrMY = { line: v("mLine"), city: v("mCity"), state: v("mState"), poskod: v("mZip") };
+  const btn = e.submitter; btn.disabled = true;
+  try {
+    await addDoc(collection(db, "applications"), data);
+    show("#formCard", false); show("#doneCard", true);
+    setTimeout(() => { location.href = LINE_OA; }, 3500);
+  } catch (err) { say("ส่งใบสมัครไม่สำเร็จ กรุณาลองใหม่ หรือทัก LINE: " + (err.code || err.message)); btn.disabled = false; }
+});
+</script>
+</body>
+</html>

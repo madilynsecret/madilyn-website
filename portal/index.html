@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>สมาชิก — Madilyn's Secret</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="/">MADILYN'S SECRET<small>ระบบสมาชิก · ติดตามพัสดุ</small></a>
+  <div class="actions">
+    <span id="who" class="muted" style="color:#cfd8e6"></span>
+    <button id="logoutBtn" class="btn ghost small" hidden>ออกจากระบบ</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <!-- loading -->
+  <section id="loading" class="card narrow"><p class="muted">กำลังโหลด…</p></section>
+
+  <!-- login -->
+  <section id="loginView" class="card narrow" hidden>
+    <h2>เข้าสู่ระบบสมาชิก</h2>
+    <form id="loginForm" autocomplete="on">
+      <label for="code">รหัสสมาชิก</label>
+      <input id="code" name="username" placeholder="เช่น TWM001 หรือ MSL05" autocomplete="username" required>
+      <label for="pw">รหัสผ่าน</label>
+      <input id="pw" type="password" autocomplete="current-password" required>
+      <button class="btn block" type="submit">เข้าสู่ระบบ</button>
+    </form>
+    <div id="loginMsg"></div>
+    <p class="muted" style="margin-top:16px">เข้าครั้งแรก ใช้รหัสผ่านที่ได้รับทาง LINE (ขึ้นต้นด้วย MS) แล้วระบบจะให้ตั้งรหัสใหม่<br>
+    ลืมรหัสผ่าน? <a id="lineHelp" href="#" target="_blank" rel="noopener">ทักแชท LINE</a> · ยังไม่เป็นสมาชิก? <a href="register.html">สมัครสมาชิก</a></p>
+  </section>
+
+  <!-- change password -->
+  <section id="pwView" class="card narrow" hidden>
+    <h2>ตั้งรหัสผ่านใหม่</h2>
+    <p class="muted">เพื่อความปลอดภัยของข้อมูล กรุณาตั้งรหัสผ่านใหม่ของคุณเองก่อนใช้งาน</p>
+    <form id="pwForm">
+      <label for="pw1">รหัสผ่านใหม่ (อย่างน้อย 8 ตัวอักษร)</label>
+      <input id="pw1" type="password" minlength="8" autocomplete="new-password" required>
+      <label for="pw2">ยืนยันรหัสผ่านใหม่</label>
+      <input id="pw2" type="password" minlength="8" autocomplete="new-password" required>
+      <button class="btn block" type="submit">บันทึกรหัสผ่าน</button>
+    </form>
+    <div id="pwMsg"></div>
+  </section>
+
+  <!-- dashboard -->
+  <section id="dash" hidden>
+    <div class="card">
+      <div class="row">
+        <div>
+          <div class="muted" id="dRoute"></div>
+          <h2 id="dName" style="margin:2px 0"></h2>
+          <div class="muted">รหัสสมาชิก <b id="dCode"></b></div>
+        </div>
+        <div class="spacer"></div>
+        <span id="dTier" class="tier"></span>
+      </div>
+      <div id="profileWarn"></div>
+    </div>
+
+    <div class="card tiercard" id="tierCard">
+      <h2>ระดับสมาชิก</h2>
+      <div id="tierBody"></div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <h2 style="margin:0">รายการขนส่งของฉัน</h2>
+        <div class="spacer"></div>
+        <input id="q" class="search" placeholder="ค้นหาเลข Tracking / รหัสรายการ">
+      </div>
+      <div id="ships"></div>
+    </div>
+
+    <div class="card" id="profileCard">
+      <div class="row"><h2 style="margin:0">ข้อมูลสมาชิก</h2><div class="spacer"></div>
+        <button id="editBtn" class="btn light small">แก้ไขข้อมูล</button></div>
+      <div id="profileView"></div>
+      <form id="profileForm" hidden>
+        <div class="grid">
+          <div><label class="req" for="fFirst">ชื่อ</label><input id="fFirst" required></div>
+          <div><label class="req" for="fLast">นามสกุล</label><input id="fLast" required></div>
+          <div><label class="req" for="fLine">LINE ID</label><input id="fLine" required></div>
+          <div><label class="req" for="fPhone">เบอร์โทร (ขึ้นต้น 66 / 60)</label><input id="fPhone" inputmode="numeric" pattern="(66|60|65)[0-9]{8,10}" title="ตัวเลขล้วน ขึ้นต้นด้วยรหัสประเทศ เช่น 66812345678" required></div>
+          <div><label for="fEmail">อีเมล</label><input id="fEmail" type="email"></div>
+          <div><label class="req" for="fIdType">ประเภทเลขบัตร</label>
+            <select id="fIdType"><option>บัตรประชาชน</option><option>เลขผู้เสียภาษีนิติบุคคล</option><option>MyKad</option><option>Passport</option></select></div>
+          <div><label class="req" for="fId">เลขบัตร / เลขผู้เสียภาษี</label><input id="fId" required></div>
+        </div>
+        <h3>ที่อยู่ในไทย</h3>
+        <div class="grid">
+          <div style="grid-column:1/-1"><label class="req" for="tLine">บ้านเลขที่ / อาคาร / ซอย / ถนน</label><input id="tLine" required></div>
+          <div><label for="tSub">ตำบล / แขวง</label><input id="tSub"></div>
+          <div><label for="tDist">อำเภอ / เขต</label><input id="tDist"></div>
+          <div><label class="req" for="tProv">จังหวัด</label><input id="tProv" required></div>
+          <div><label class="req" for="tZip">รหัสไปรษณีย์</label><input id="tZip" inputmode="numeric" pattern="[0-9]{5}" required></div>
+        </div>
+        <div id="myBlock" hidden>
+          <h3>ที่อยู่มาเลเซีย</h3>
+          <div class="grid">
+            <div style="grid-column:1/-1"><label class="req" for="mLine">Address</label><input id="mLine"></div>
+            <div><label for="mCity">Bandar (เมือง)</label><input id="mCity"></div>
+            <div><label class="req" for="mState">Negeri (รัฐ)</label><input id="mState"></div>
+            <div><label class="req" for="mZip">Poskod</label><input id="mZip" inputmode="numeric" pattern="[0-9]{5}"></div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn" type="submit">บันทึก</button>
+          <button class="btn light" type="button" id="cancelEdit">ยกเลิก</button>
+        </div>
+      </form>
+      <div id="profileMsg"></div>
+    </div>
+  </section>
+</main>
+<footer>บริษัท เมดิลินส์ ซีเครท (ไทยแลนด์) จำกัด · 085-559-0903 · <a href="/">madilynsecret.com</a></footer>
+
+<script type="module">
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { doc, getDoc, updateDoc, collection, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { auth, db, LINE_OA, codeToEmail, emailToCode, isMemberEmail, TIERS, spend12, nextTierInfo, STATUSES, ROUTE_NAME,
+         fmt, fmtDate, esc, $, show, authErrorTH } from "./common.js";
+
+$("#lineHelp").href = LINE_OA;
+let member = null, code = null, shipments = [];
+const msg = (id, text, kind = "err") => { $(id).innerHTML = text ? `<div class="msg ${kind}">${esc(text)}</div>` : ""; };
+const views = ["#loading", "#loginView", "#pwView", "#dash"];
+const only = (v) => views.forEach((x) => show(x, x === v));
+
+$("#loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  msg("#loginMsg", "");
+  const c = $("#code").value.trim().toUpperCase();
+  if (!/^(TWM|MSL)\d{2,4}$/.test(c)) return msg("#loginMsg", "รูปแบบรหัสสมาชิกไม่ถูกต้อง เช่น TWM001 หรือ MSL05");
+  const btn = e.submitter; btn.disabled = true;
+  try { await signInWithEmailAndPassword(auth, codeToEmail(c), $("#pw").value); }
+  catch (err) { msg("#loginMsg", authErrorTH(err)); }
+  finally { btn.disabled = false; }
+});
+
+$("#logoutBtn").addEventListener("click", () => signOut(auth));
+
+$("#pwForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  msg("#pwMsg", "");
+  const a = $("#pw1").value, b = $("#pw2").value;
+  if (a.length < 8) return msg("#pwMsg", "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร");
+  if (a !== b) return msg("#pwMsg", "รหัสผ่านทั้งสองช่องไม่ตรงกัน");
+  if (/^MS\d{4}$/i.test(a)) return msg("#pwMsg", "กรุณาตั้งรหัสใหม่ที่ไม่ใช่รหัสตั้งต้น");
+  const btn = e.submitter; btn.disabled = true;
+  try {
+    await updatePassword(auth.currentUser, a);
+    await updateDoc(doc(db, "members", code), { mustChangePassword: false, updatedAt: serverTimestamp() });
+    member.mustChangePassword = false;
+    await renderDash();
+  } catch (err) { msg("#pwMsg", authErrorTH(err)); }
+  finally { btn.disabled = false; }
+});
+
+onAuthStateChanged(auth, async (user) => {
+  show("#logoutBtn", !!user);
+  $("#who").textContent = "";
+  if (!user) { member = null; only("#loginView"); return; }
+  if (!isMemberEmail(user.email)) { only("#loginView"); msg("#loginMsg", "บัญชีนี้ไม่ใช่บัญชีสมาชิก (แอดมินใช้หน้า admin.html)"); return; }
+  code = emailToCode(user.email);
+  $("#who").textContent = code;
+  only("#loading");
+  try {
+    const snap = await getDoc(doc(db, "members", code));
+    if (!snap.exists()) { only("#loginView"); msg("#loginMsg", "ยังไม่พบข้อมูลสมาชิกของบัญชีนี้ กรุณาทัก LINE แจ้งแอดมิน"); await signOut(auth); return; }
+    member = snap.data();
+    if (member.mustChangePassword) { only("#pwView"); return; }
+    await renderDash();
+  } catch (err) { only("#loginView"); msg("#loginMsg", authErrorTH(err)); }
+});
+
+async function renderDash() {
+  const q = query(collection(db, "shipments"), where("memberUid", "==", auth.currentUser.uid));
+  const snap = await getDocs(q);
+  shipments = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => (b.receivedDate || "").localeCompare(a.receivedDate || "") || b.id.localeCompare(a.id));
+  const name = member.company || `${member.firstName || ""} ${member.lastName || ""}`.trim();
+  $("#dName").textContent = name || code;
+  $("#dCode").textContent = code;
+  $("#dRoute").textContent = "เส้นทาง " + (ROUTE_NAME[member.route] || member.route);
+  const t = member.tier || "Silver";
+  $("#dTier").className = "tier " + t; $("#dTier").textContent = t;
+  renderTier(t); renderShips(""); renderProfile(); only("#dash");
+}
+
+function renderTier(t) {
+  const s12 = spend12(shipments);
+  const nx = nextTierInfo(t, s12);
+  $("#tierCard").className = "card tiercard " + t;
+  let h = `<div class="row"><span class="tier ${t}">${t}</span><b>${esc(TIERS.label[t])}</b></div>
+    <p class="muted" style="margin:10px 0 0">ยอดค่าขนส่ง 12 เดือนล่าสุด</p>
+    <div style="font-size:24px;font-family:Poppins,sans-serif;font-weight:600;color:var(--navy)">${fmt(s12, 2)} บาท</div>`;
+  if (nx) {
+    h += `<div class="bar" role="progressbar" aria-valuenow="${nx.pct}" aria-valuemin="0" aria-valuemax="100"><span style="width:${nx.pct}%"></span></div>
+      <p class="muted" style="margin:0">อีก <b>${fmt(nx.need, 0)} บาท</b> ภายใน 12 เดือน เพื่อเลื่อนเป็น <span class="tier ${nx.next}">${nx.next}</span> (เกณฑ์ ${fmt(TIERS.min[nx.next])} บาท)</p>`;
+  } else {
+    h += `<p class="muted" style="margin:6px 0 0">คุณอยู่ในระดับสูงสุดแล้ว ขอบคุณที่ไว้วางใจเรา</p>`;
+  }
+  h += `<h3>สิทธิ์ของคุณ</h3><ul class="perks">${TIERS.perks[t].map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+    <p class="muted" style="margin-top:10px">ระดับคำนวณจากยอดค่าขนส่งทั้ง 2 เส้นทางรวมกัน เลื่อนขั้นอัตโนมัติเมื่อถึงเกณฑ์ · ทบทวนระดับปีละครั้งทุกเดือนมกราคม</p>`;
+  $("#tierBody").innerHTML = h;
+}
+
+$("#q").addEventListener("input", (e) => renderShips(e.target.value));
+function renderShips(term) {
+  const t = term.trim().toLowerCase();
+  const list = t ? shipments.filter((s) => (s.tracking || "").toLowerCase().includes(t) || s.id.toLowerCase().includes(t)) : shipments;
+  if (!shipments.length) { $("#ships").innerHTML = `<p class="muted">ยังไม่มีรายการขนส่ง</p>`; return; }
+  if (!list.length) { $("#ships").innerHTML = `<p class="muted">ไม่พบรายการที่ค้นหา</p>`; return; }
+  $("#ships").innerHTML = list.map((s) => {
+    const step = Math.max(0, STATUSES.indexOf(s.status));
+    const done = s.status === "จัดส่งแล้ว";
+    return `<article class="ship">
+      <div class="head"><div><div class="muted">${esc(s.id)}${s.direction ? " · " + esc(s.direction) : ""}</div>
+        <div class="trk">${esc(s.tracking || "ไม่มีเลข Tracking")}</div></div>
+        <span class="chip ${done ? "done" : ""}">${esc(s.status || "—")}</span></div>
+      <div class="steps ${done ? "done" : ""}" aria-hidden="true">${STATUSES.map((_, i) => `<span class="${i <= step ? "on" : ""}"></span>`).join("")}</div>
+      <div class="meta">
+        <div>รับเข้าโกดัง<br><b>${fmtDate(s.receivedDate)}</b></div>
+        <div>ถึงปลายทาง<br><b>${fmtDate(s.arrivedTHDate || s.arrivedDate)}</b></div>
+        <div>ประเภท<br><b>${esc(s.category || "—")} · ${esc(s.mode || "")}</b></div>
+        <div>น้ำหนัก / ปริมาตร<br><b>${fmt(s.kg, 1)} kg · ${fmt(s.cbm, 4)} CBM</b></div>
+        <div>ค่าขนส่งรวม<br><b>${fmt(s.total, 2)} บาท</b></div>
+      </div></article>`;
+  }).join("");
+}
+
+function missingFields(m) {
+  const miss = [];
+  if (!m.firstName) miss.push("ชื่อ"); if (!m.lastName) miss.push("นามสกุล");
+  if (!m.lineId) miss.push("LINE ID"); if (!m.phone || !/^(66|60|65)\d{8,10}$/.test(m.phone)) miss.push("เบอร์โทร");
+  if (!m.idNumber) miss.push("เลขบัตร");
+  const t = m.addrTH || {}; if (!t.line || !t.prov || !t.zip) miss.push("ที่อยู่ในไทย");
+  if (m.route === "MSL") { const y = m.addrMY || {}; if (!y.line || !y.state || !y.poskod) miss.push("ที่อยู่มาเลเซีย"); }
+  return miss;
+}
+function renderProfile() {
+  const m = member, t = m.addrTH || {}, y = m.addrMY || {};
+  const miss = missingFields(m);
+  $("#profileWarn").innerHTML = miss.length ? `<div class="msg warn">กรุณาเติมข้อมูลให้ครบ: ${esc(miss.join(", "))} — กด "แก้ไขข้อมูล" ด้านล่าง</div>` : "";
+  const line = (k, v) => `<div>${k}<br><b>${esc(v || "—")}</b></div>`;
+  $("#profileView").innerHTML = `<div class="meta" style="margin-top:10px">
+    ${m.company ? line("บริษัท / ร้าน", m.company) : ""}${line("ชื่อ-นามสกุล", `${m.firstName || ""} ${m.lastName || ""}`)}
+    ${line("LINE ID", m.lineId)}${line("เบอร์โทร", m.phone)}${line("อีเมล", m.email)}
+    ${line(m.idType || "เลขบัตร", m.idNumber ? "•••••" + String(m.idNumber).slice(-4) : "")}
+    ${line("ที่อยู่ในไทย", [t.line, t.sub, t.dist, t.prov, t.zip].filter(Boolean).join(" "))}
+    ${m.route === "MSL" ? line("ที่อยู่มาเลเซีย", [y.line, y.city, y.state, y.poskod].filter(Boolean).join(" ")) : ""}</div>`;
+  show("#myBlock", m.route === "MSL");
+  ["mLine", "mState", "mZip"].forEach((id) => { $("#" + id).required = m.route === "MSL"; });
+}
+$("#editBtn").addEventListener("click", () => {
+  const m = member, t = m.addrTH || {}, y = m.addrMY || {};
+  const set = (id, v) => { $("#" + id).value = v || ""; };
+  set("fFirst", m.firstName); set("fLast", m.lastName); set("fLine", m.lineId); set("fPhone", m.phone); set("fEmail", m.email);
+  set("fIdType", m.idType || "บัตรประชาชน"); set("fId", m.idNumber);
+  set("tLine", t.line); set("tSub", t.sub); set("tDist", t.dist); set("tProv", t.prov); set("tZip", t.zip);
+  set("mLine", y.line); set("mCity", y.city); set("mState", y.state); set("mZip", y.poskod);
+  show("#profileView", false); show("#profileForm", true); show("#editBtn", false); msg("#profileMsg", "");
+});
+$("#cancelEdit").addEventListener("click", () => { show("#profileForm", false); show("#profileView", true); show("#editBtn", true); });
+$("#profileForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const v = (id) => $("#" + id).value.trim();
+  const upd = {
+    firstName: v("fFirst"), lastName: v("fLast"), lineId: v("fLine"), phone: v("fPhone").replace(/\D/g, ""), email: v("fEmail"),
+    idType: v("fIdType"), idNumber: v("fId").replace(/[\s-]/g, ""),
+    addrTH: { line: v("tLine"), sub: v("tSub"), dist: v("tDist"), prov: v("tProv"), zip: v("tZip") },
+    updatedAt: serverTimestamp()
+  };
+  if (member.route === "MSL") upd.addrMY = { line: v("mLine"), city: v("mCity"), state: v("mState"), poskod: v("mZip") };
+  if (upd.idType === "บัตรประชาชน" && !/^\d{13}$/.test(upd.idNumber)) return msg("#profileMsg", "เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก");
+  const btn = e.submitter; btn.disabled = true;
+  try {
+    await updateDoc(doc(db, "members", code), upd);
+    Object.assign(member, upd);
+    show("#profileForm", false); show("#profileView", true); show("#editBtn", true);
+    renderProfile(); msg("#profileMsg", "บันทึกข้อมูลแล้ว", "ok");
+  } catch (err) { msg("#profileMsg", authErrorTH(err)); }
+  finally { btn.disabled = false; }
+});
+</script>
+</body>
+</html>
